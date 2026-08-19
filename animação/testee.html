@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024">
+    <title>Exemplo media queries</title>
+    <style>
+        span {
+            height: 40px;
+            background-color: #069;
+            font-size: 20px;
+            color: #FFF;
+            visibility: hidden;
+        }
+        
+        .xs {
+            visibility: visible;
+        }
+        
+        @media(min-width: 576px) {
+            .sm {
+                visibility: visible;
+            }
+        }
+        
+        @media(min-width: 768px) {
+            .md {
+                visibility: visible;
+            }
+        }
+        
+        @media(min-width: 992px) {
+            .lg {
+                visibility: visible;
+            }
+        }
+        
+        @media(min-width: 1200px) {
+            .xl {
+                visibility: visible;
+            }
+        }
+        
+        @media(min-width: 1400px) {
+            .xxl {
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="exemplo">
+        <span class="xs">xs</span>
+        <span class="sm">sm</span>
+        <span class="md">md</span>
+        <span class="lg">lg</span>
+        <span class="xl">xl</span>
+        <span class="xxl">xxl</span>
+    </div><br>
+    <div id="resolucao"></div>
+    <div>
+        <p>Legenda:</p>
+        <ul>
+            <li>.xs: Resolução menor que 576px</li>
+            <li>.sm: Resolução entre 576px e 768px</li>
+            <li>.md: Resolução entre 768px e 992px</li>
+            <li>.lg: Resolução entre 992px e 1200px</li>
+            <li>.xl: Resolução entre 1200px e 1400px</li>
+            <li>.xxl: Resolução maior que 1400px</li>
+        </ul>
+    </div>
+    <script>
+        const resolucao = document.getElementById('resolucao');
+
+        function atualizarResolucao() {
+            resolucao.textContent = `Resolução: ${window.innerWidth}px`;
+        }
+        window.addEventListener('resize', atualizarResolucao);
+        atualizarResolucao();
+    </script>
+</body>
+
+</html>
