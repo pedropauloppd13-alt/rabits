@@ -1,53 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rabits</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rabits</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-<body class="d-flex flex-column">
-    <!--Navbar-->
-        <nav class="navbar navbar-expand-lg bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Rabits</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Início</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Fichas</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Ofensiva</a>
-                    </li>
-                </ul>
-                </div>
-            </div>
-        </nav>
-    <!--Main-->
+    <body class="d-flex flex-column">
+        <!--Navbar-->
+
+        <div class="barra-de-nav" id="nav-principal">
+            <a class="nav-bnt nav-bnt-selec" id="bnt-fichas"></a>
+            <a class="nav-bnt " id="bnt-ofensiva"></a>
+            <a class="nav-bnt" id="bnt-perfil"></a>
+        </div>
+        <!--Main-->
         <main>
             <div class="container d-flex flex-column justify-content-center text-center">
                 <!--Cards-->
                 <div class="d-flex justify-content-around flex-wrap mt-5">
                     <div class="mt-2">
                         <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
+                            <img src="images/fichas.png" class="card-img-top object-fit-cover" alt="Fichas de Treino">
                             <div class="card-body">
                                 <h5 class="card-title">Fichas de Treino</h5>
                                 <a href="#" class="btn btn-primary">Editar</a>
@@ -56,7 +43,7 @@
                     </div>
                     <div class="mt-2">
                         <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
+                            <img src="images/atividades.png" class="card-img-top object-fit-cover" alt="Atividades">
                             <div class="card-body">
                                 <h5 class="card-title">Atividades</h5>
                                 <a href="#" class="btn btn-primary">Navegar</a>
@@ -65,7 +52,7 @@
                     </div>
                     <div class="mt-2">
                         <div class="card" style="width: 18rem;">
-                            <img src="..." class="card-img-top" alt="...">
+                            <img src="images/ofensiva.png" class="card-img-top object-fit-cover" alt="Ofensiva">
                             <div class="card-body">
                                 <h5 class="card-title">Ofensiva</h5>
                                 <a href="#" class="btn btn-primary">Verificar Ofensiva</a>
@@ -97,9 +84,11 @@
                 </div>
             </div>
         </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+    </html>
 
 </body>
+
 </html>
