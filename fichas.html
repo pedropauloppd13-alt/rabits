@@ -2,14 +2,15 @@
 <html lang="en">
 
 <head>
+    <!DOCTYPE html>
+    <html lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 
 <body>
-    <!DOCTYPE html>
-    <html lang="en">
+
 
     <head>
         <meta charset="UTF-8">
@@ -31,27 +32,21 @@
             <a class="nav-bnt" id="bnt-perfil"><img src="images/icones/person-fill.svg" alt="Profile Icon"></a>
         </div>
         <!-- Main -->
-        <main class="container mt-8">
+        <main class="container">
             <!-- Caixas de Conteúdo -->
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card" id="criar-ficha-card">
-                        <img src="images/icones/plus-lg.svg" class="card-img-top" alt="+">
-                        <div class="card-img-overlay">
-                            <h5 class="card-title text-white">Criar Ficha</h5>
-                        </div>
-                    </div>
-
-                    <!--MODELO DE FICHA-->
-                    <div class="card" style="width: 18rem;">
-                        <img src="images/icones/plus-lg.svg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">MODELO DE FICHA</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
+            <!--CRIAR FICHA (Always last in order)-->
+            <div class="card order-last" id="criar-ficha-card">
+                <div class="card-img-overlay">
+                    <h5 class="card-title text-white">Criar Ficha</h5>
                 </div>
+                <img src="images/icones/plus-lg.svg" class="card-img-top" alt="+">
+            </div>
 
+            <!--MODELO DE FICHA-->
+            <div class="card ficha-card">
+                <h5 class="card-title text-white">NOME FICHA</h5>
+                <img src="images/icones/plus-lg.svg" class="card-img-top" alt="...">
+                <a href="#" class="btn btn-primary"><img src="images/icones/gear-fill.svg" alt="Edit"></a>
             </div>
         </main>
 
