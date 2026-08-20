@@ -1,0 +1,21 @@
+.card {
+    background-color: #2A8AB5;
+    width: 18rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+}
+
+.card:hover {
+    width: 17rem;
+    height: 9rem;
+    cursor: pointer;
+}
+
+.card img {
+    width: 100px;
+    height: 100px;
+}
