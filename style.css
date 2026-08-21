@@ -1,0 +1,130 @@
+img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+main {
+    margin-left: 200px;
+    padding: 20px;
+}
+
+.barra-de-nav {
+    background-color: #2A8AB5;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 99999;
+    width: 200px;
+    height: 100%;
+}
+
+.nav-bnt {
+    display: flex;
+    height: 100px;
+    width: 100px;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-bnt img {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+}
+
+.nav-bnt-selec {
+    display: flex;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.title {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+
+@media only screen and (min-width: 0px) {
+    .barra-de-nav {
+        width: 100%;
+        height: 90px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        padding: 0 10px;
+    }
+}
+
+main {
+    margin-left: 0;
+    padding: 0px;
+    padding-bottom: 100px;
+}
+
+.nav-bnt {
+    height: 60px;
+    width: 60px;
+    border-radius: 14px;
+}
+
+.nav-bnt img {
+    height: 36px;
+    width: 36px;
+}
+
+.title {
+    display: none;
+}
+
+#bnt-inicial {
+    display: none;
+}
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+
+@media only screen and (min-width: 768px) {
+    body {
+        justify-content: flex-start;
+    }
+    main {
+        margin-left: 200px;
+        padding: 20px;
+    }
+    .fundo {
+        justify-content: space-evenly;
+    }
+    .title {
+        display: block;
+    }
+    .barra-de-nav {
+        width: 200px;
+        height: 100%;
+        flex-direction: column;
+        position: fixed;
+        left: 0;
+        padding: 0;
+    }
+    .nav-bnt {
+        width: 100%;
+        border-radius: 0px;
+    }
+    #bnt-inicial {
+        height: 120px;
+        display: block;
+    }
+    #bnt-inicial img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+    }
+}
