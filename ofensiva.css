@@ -36,7 +36,7 @@ main>.container {
     text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 }
 
-h1 {
+.container>.h1 {
     color: #248AB5;
     margin: 20px;
 }
@@ -75,7 +75,7 @@ h3 {
     margin-bottom: 1.5rem;
 }
 
-.title {
+.fichas-container>.title {
     color: #248AB5;
     font-size: 1.875rem;
     font-weight: bold;
@@ -198,7 +198,7 @@ h3 {
         padding: 1rem;
         border-radius: 1.5rem;
     }
-    .title {
+    .container>.title {
         font-size: 1.5rem;
     }
     .date-selector {
