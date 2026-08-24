@@ -4,7 +4,11 @@
     box-sizing: border-box;
     height: 500px;
     padding: 20px;
-    width: 320px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .form .title {
@@ -26,7 +30,7 @@
 .input-container {
     height: 50px;
     position: relative;
-    width: 100%;
+    width: 80%;
 }
 
 .ic1 {
@@ -75,7 +79,7 @@
     position: absolute;
     transform-origin: 0 50%;
     transition: transform 200ms, color 200ms;
-    top: 20px;
+    top: 15px;
 }
 
 .input:focus~.cut {

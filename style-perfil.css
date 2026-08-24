@@ -41,6 +41,19 @@
     cursor: pointer;
 }
 
+input {
+    appearance: none;
+    color: white;
+    background-color: transparent;
+    border: none;
+    font-size: larger;
+    font-weight: 600;
+}
+
+input::placeholder {
+    color: rgb(233, 232, 232);
+}
+
 
 /* Extra small devices (phones, 600px and down) */
 

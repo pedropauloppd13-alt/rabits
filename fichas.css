@@ -41,18 +41,6 @@
     font-family: "Monaco", "Courier New", monospace;
 }
 
-.card a {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    text-decoration: none;
-}
-
-.card a img {
-    width: 20px;
-    height: 20px;
-}
-
 .ficha-card {
     align-items: center;
     position: relative;
@@ -75,15 +63,45 @@
     transform: translate(-50%, -50%);
 }
 
-.ficha-card>a {
+.ficha-card .editar-ficha {
     position: absolute;
     right: 1rem;
     bottom: 1rem;
+    z-index: 5;
 }
 
-.ficha-card>a img {
+.ficha-card .editar-ficha img {
     width: 20px;
     height: 20px;
+}
+
+.menu-ficha {
+    display: none;
+    position: absolute;
+    right: 10px;
+    bottom: 50px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 5px;
+    z-index: 10;
+}
+
+.menu-ficha button {
+    display: block;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.menu-ficha button:hover {
+    background-color: #eee;
+}
+
+.ficha-card {
+    position: relative;
 }
 
 @media only screen and (max-width: 768px) {

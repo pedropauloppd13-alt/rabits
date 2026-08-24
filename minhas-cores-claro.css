@@ -640,3 +640,7 @@ a.text-danger:hover,
 a.text-danger:focus {
     color: #b44100 !important;
 }
+
+a {
+    text-decoration: none;
+}
