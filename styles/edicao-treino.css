@@ -84,7 +84,12 @@
     scale: 0;
 }
 
-#criar-ficha-card img {
+.card-img-top {
+    max-height: 70%;
+    width: auto;
+}
+
+#criar-atividade-card img {
     width: 100px;
     height: 100px;
 }
