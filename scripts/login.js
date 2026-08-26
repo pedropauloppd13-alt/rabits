@@ -1,8 +1,17 @@
 $('.submit').on('click', function(e) {
     e.preventDefault();
-    var firstname = $('#firstname').val();
-    var lastname = $('#lastname').val();
+    const email = $('#email').val().trim().toLowerCase();
+    const senha = $('#password').val();
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const usuario = usuarios.find(function(item) {
+        return item.email === email && item.senha === senha;
+    });
 
-    localStorage.setItem('nome', firstname + ' ' + lastname);
-    localStorage.setItem('email', $('#email').val());
+    if (!usuario) {
+        alert('E-mail ou senha incorretos.');
+        return;
+    }
+
+    localStorage.setItem('usuarioAtual', usuario.id);
+    window.location.href = 'index.html';
 })

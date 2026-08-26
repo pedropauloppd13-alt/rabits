@@ -1,7 +1,7 @@
 $("#cadastrar").click(function() {
 
     const nome = $("#nome").val().trim();
-    const email = $("#email").val().trim();
+    const email = $("#email").val().trim().toLowerCase();
     const senha = $("#senha").val();
     const confirmarSenha = $("#confirmar-senha").val();
 

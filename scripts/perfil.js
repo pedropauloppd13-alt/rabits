@@ -1,41 +1,73 @@
-var editPerfil = document.getElementById("edit-perfil");
-var editando = false;
-var atributos = document.getElementsByClassName("edit-perfil")
+const editPerfil = document.getElementById('edit-perfil');
+const camposPerfil = document.querySelectorAll('.edit-perfil');
+let editando = false;
 
-for (let i = 0; i < atributos.length; i++) {
-    info = localStorage.getItem(atributos[i].getAttribute("infor"));
-    if (info == null) {
-        continue
-    } else {
-        atributos[i].innerHTML = info;
-    }
+function obterUsuarioAtual() {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const usuarioAtual = localStorage.getItem('usuarioAtual');
+    return usuarios.find(function(usuario) {
+        return usuario.id === usuarioAtual;
+    });
 }
 
+const usuario = obterUsuarioAtual();
 
-editPerfil.addEventListener("click", (e) => {
+if (!usuario) {
+    window.location.href = 'login.html';
+} else {
+    camposPerfil.forEach(function(campo) {
+        campo.value = usuario[campo.dataset.campo] || '';
+    });
+}
+
+editPerfil.addEventListener('click', function() {
     if (editando) {
-        finEdit(editPerfil);
+        finalizarEdicao();
     } else {
-        iniEdit(editPerfil);
+        iniciarEdicao();
     }
 });
 
-function iniEdit(_alvo) {
-    _alvo.firstChild.src = "images/icones/check-lg.svg";
-    let aux = document.getElementsByClassName(_alvo.id);
-    for (let i = 0; i < aux.length; i++) {
-        aux[i].contentEditable = "true";
-    };
+function iniciarEdicao() {
+    editPerfil.querySelector('img').src = 'images/icones/check-lg.svg';
+    camposPerfil.forEach(function(campo) {
+        campo.disabled = false;
+    });
     editando = true;
-};
+}
 
-function finEdit(_alvo) {
-    _alvo.firstChild.src = "images/icones/pencil-square.svg";
-    let aux = document.getElementsByClassName(_alvo.id);
-    for (let i = 0; i < aux.length; i++) {
-        aux[i].contentEditable = "false";
-        localStorage.setItem(aux[i].getAttribute("infor"), aux[i].innerHTML)
-        console.log(aux[i].getAttribute("infor"))
-    };
+function finalizarEdicao() {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const usuarioAtual = localStorage.getItem('usuarioAtual');
+    const indiceUsuario = usuarios.findIndex(function(item) {
+        return item.id === usuarioAtual;
+    });
+
+    if (indiceUsuario === -1) {
+        return;
+    }
+
+    const emailCampo = document.querySelector('[data-campo="email"]');
+    const novoEmail = emailCampo.value.trim().toLowerCase();
+    const emailEmUso = usuarios.some(function(item, indice) {
+        return indice !== indiceUsuario && item.email === novoEmail;
+    });
+
+    if (!novoEmail || emailEmUso) {
+        alert(emailEmUso ? 'Este e-mail já está cadastrado.' : 'Informe um e-mail válido.');
+        return;
+    }
+
+    camposPerfil.forEach(function(campo) {
+        const valor = campo.dataset.campo === 'email' ?
+            novoEmail :
+            campo.value.trim();
+        usuarios[indiceUsuario][campo.dataset.campo] = valor;
+        campo.value = valor;
+        campo.disabled = true;
+    });
+
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    editPerfil.querySelector('img').src = 'images/icones/pencil-square.svg';
     editando = false;
-};
+}
