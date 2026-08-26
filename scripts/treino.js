@@ -4,6 +4,7 @@ let treinoIdAtual;
 let fichas;
 let fichaAtual;
 let treinoAtual;
+let cronometroIntervalo;
 
 
 $(document).ready(function() {
@@ -18,10 +19,17 @@ $(document).ready(function() {
     treinoIdAtual =
         parametros.get("treino");
 
-    fichas =
-        JSON.parse(
-            localStorage.getItem("fichas")
-        ) || [];
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const usuarioAtual = usuarios.find(function(usuario) {
+        return usuario.id === localStorage.getItem("usuarioAtual");
+    });
+
+    if (!usuarioAtual) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    fichas = usuarioAtual.fichas || [];
 
     fichaAtual =
         fichas.find(function(ficha) {
@@ -53,9 +61,7 @@ $(document).ready(function() {
         return;
     }
 
-    if (!treinoAtual.atividades) {
-        treinoAtual.atividades = [];
-    }
+    treinoAtual.atividades = treinoAtual.atividades || [];
 
     $("#nome-treino").text(
         treinoAtual.nome
@@ -80,6 +86,9 @@ $(document).ready(function() {
         }
     );
 
+    $("#pular-descanso").click(function() {
+        finalizarDescanso();
+    });
 });
 
 function carregarAtividades() {
@@ -93,7 +102,6 @@ function carregarAtividades() {
             );
         }
     );
-
     atualizarProgresso();
 }
 
@@ -122,17 +130,7 @@ function criarExercicio(
         "exercicio-info"
     );
 
-    info.text(
-
-        atividade.series +
-        " séries × " +
-        atividade.repeticoes +
-        " reps · " +
-        atividade.peso +
-        " · " +
-        atividade.descanso +
-        " descanso"
-    );
+    info.text(formatarInformacoes(atividade));
 
 
     const series =
@@ -141,9 +139,9 @@ function criarExercicio(
         "series"
     );
 
-    for (
-        let i = 1; i <= atividade.series; i++
-    ) {
+    const quantidadeEtapas = atividade.tipo === "tempo" ? 1 : Number(atividade.series) || 0;
+
+    for (let i = 1; i <= quantidadeEtapas; i++) {
         const botao =
             $("<button>");
 
@@ -151,9 +149,7 @@ function criarExercicio(
             "serie"
         );
 
-        botao.text(
-            i
-        );
+        botao.text(atividade.tipo === "tempo" ? "Concluir" : i);
 
         botao.attr(
             "data-exercicio",
@@ -167,10 +163,21 @@ function criarExercicio(
 
         botao.click(
             function() {
-                $(this).toggleClass(
-                    "concluida"
-                );
+                const botaoAtual = $(this);
+
+                if (botaoAtual.hasClass("concluida")) {
+                    return;
+                }
+
+                botaoAtual.addClass("concluida");
                 atualizarProgresso();
+
+                if ($(".serie:not(.concluida)").length > 0) {
+                    iniciarDescanso(Number(atividade.descanso) || 0);
+                } else {
+                    clearInterval(cronometroIntervalo);
+                    $("#cronometro-descanso").text("00:00");
+                }
             }
         );
 
@@ -198,15 +205,9 @@ function criarExercicio(
 function atualizarProgresso() {
 
     let totalSeries = 0;
-    treinoAtual.atividades
-        .forEach(
-            function(atividade) {
-                totalSeries +=
-                    Number(
-                        atividade.series
-                    );
-            }
-        );
+    treinoAtual.atividades.forEach(function(atividade) {
+        totalSeries += atividade.tipo === "tempo" ? 1 : Number(atividade.series) || 0;
+    });
 
     const concluidas =
         $(".serie.concluida")
@@ -252,6 +253,49 @@ function atualizarProgresso() {
         );
 }
 
+function formatarInformacoes(atividade) {
+    if (atividade.tipo === "tempo") {
+        return "Duração: " + (Number(atividade.duracao) || 0) +
+            " segundos · Descanso: " + (Number(atividade.descanso) || 0) + " segundos";
+    }
+
+    return (Number(atividade.series) || 0) + " séries × " +
+        (Number(atividade.repeticoes) || 0) + " reps · Descanso: " +
+        (Number(atividade.descanso) || 0) + " segundos";
+}
+
+function iniciarDescanso(segundos) {
+    clearInterval(cronometroIntervalo);
+
+    if (segundos <= 0) {
+        finalizarDescanso();
+        return;
+    }
+
+    let restante = segundos;
+    $("#descanso-overlay").prop("hidden", false);
+    atualizarCronometro(restante);
+    cronometroIntervalo = setInterval(function() {
+        restante -= 1;
+        atualizarCronometro(restante);
+
+        if (restante <= 0) {
+            finalizarDescanso();
+        }
+    }, 1000);
+}
+
+function atualizarCronometro(segundos) {
+    $("#cronometro-descanso").text(Math.max(0, segundos));
+}
+
+function finalizarDescanso() {
+    clearInterval(cronometroIntervalo);
+    cronometroIntervalo = null;
+    $("#descanso-overlay").prop("hidden", true);
+    $("#cronometro-descanso").text("00");
+}
+
 function finalizarTreino() {
 
     const total =
@@ -270,6 +314,25 @@ function finalizarTreino() {
             return;
         }
     }
+
+    treinoAtual.execucoes = treinoAtual.execucoes || [];
+    const hoje = new Date();
+    const dataExecucao = hoje.getFullYear() + "-" +
+        String(hoje.getMonth() + 1).padStart(2, "0") + "-" +
+        String(hoje.getDate()).padStart(2, "0");
+
+    if (!treinoAtual.execucoes.includes(dataExecucao)) {
+        treinoAtual.execucoes.push(dataExecucao);
+        const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        const usuarioIndex = usuarios.findIndex(function(usuario) {
+            return usuario.id === localStorage.getItem("usuarioAtual");
+        });
+
+        if (usuarioIndex !== -1) {
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        }
+    }
+
     alert(
         "Treino finalizado!"
     );

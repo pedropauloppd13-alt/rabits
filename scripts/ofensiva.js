@@ -1,96 +1,100 @@
-const calendar = document.querySelector('.calendar');
-const monthSelector = document.querySelector('#month-selector');
-const dateNav = calendar.querySelector('.date-nav-container');
+const calendario = document.querySelector('.calendar');
+const seletorMes = document.querySelector('#month-selector');
+const diasCalendario = calendario.querySelector('.date-nav-container');
+const anoAtual = new Date().getFullYear();
 
-const ano = 2026;
+function dataLocal(data) {
+    return data.getFullYear() + '-' +
+        String(data.getMonth() + 1).padStart(2, '0') + '-' +
+        String(data.getDate()).padStart(2, '0');
+}
 
-function gerarCalendario(mes) {
+function obterDados() {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const idUsuario = localStorage.getItem('usuarioAtual');
+    const usuario = usuarios.find(function(item) {
+        return item.id === idUsuario;
+    });
+    const datas = new Set();
 
-    // Primeiro dia do mês
-    const primeiroDia = new Date(ano, mes, 1);
+    (usuario && usuario.fichas || []).forEach(function(ficha) {
+        (ficha.treinos || []).forEach(function(treino) {
+            (treino.execucoes || []).forEach(function(data) {
+                datas.add(data);
+            });
+        });
+    });
 
-    // Dia da semana:
-    // 0 = Domingo
-    // 1 = Segunda
-    // 2 = Terça
-    // 3 = Quarta
-    // 4 = Quinta
-    // 5 = Sexta
-    // 6 = Sábado
+    return { usuario: usuario, datas: datas };
+}
+
+function gerarCalendario(mes, datasConcluidas) {
+    const primeiroDia = new Date(anoAtual, mes, 1);
     const diaDaSemana = primeiroDia.getDay();
+    const quantidadeDias = new Date(anoAtual, mes + 1, 0).getDate();
 
-    // Quantidade de dias do mês
-    const quantidadeDias = new Date(ano, mes + 1, 0).getDate();
+    diasCalendario.innerHTML = '';
 
-    // Limpa o calendário
-    dateNav.innerHTML = '';
-
-    // Espaços antes do dia 1
     for (let i = 0; i < diaDaSemana; i++) {
-        dateNav.innerHTML += `
-            <div class="day-item-empty"></div>
-        `;
+        diasCalendario.innerHTML += '<div class="day-item-empty"></div>';
     }
 
-    // Cria os dias
-    for (let i = 1; i <= quantidadeDias; i++) {
+    for (let dia = 1; dia <= quantidadeDias; dia++) {
+        const data = new Date(anoAtual, mes, dia);
+        const hoje = dataLocal(data) === dataLocal(new Date());
+        const classes = datasConcluidas.has(dataLocal(data)) ? ' treino-feito' : '';
 
-        const hoje = new Date();
-
-        const eHoje = i === hoje.getDate() &&
-            mes === hoje.getMonth() &&
-            ano === hoje.getFullYear();
-
-        dateNav.innerHTML += `
-            <div class="day-item ${eHoje?'day-active':''}">
-                <div class="day-number">${i}</div>
-            </div>
-        `;
+        diasCalendario.innerHTML += `
+            <div class="day-item ${hoje ? 'day-active' : ''}${classes}">
+                <div class="day-number">${dia}</div>
+            </div>`;
     }
 }
 
-function gerarUltimosSete() {
-    const fichas = document.querySelectorAll('.ficha-dias');
+function gerarCalendariosDasFichas(usuario) {
+    const container = document.querySelector('.fichas-container');
+    const modelo = container.querySelector('.meeting-card');
+    container.innerHTML = '';
 
-    const hoje = new Date();
+    (usuario && usuario.fichas || []).forEach(function(ficha) {
+        const card = modelo.cloneNode(true);
+        const datasFicha = new Set();
+        const nav = card.querySelector('.date-nav-container');
 
-    fichas.forEach(ficha => {
-        const dateNavFicha = ficha.querySelector('.date-nav-container');
+        card.style.display = '';
+        card.querySelector('.ficha-nome').textContent = ficha.nome;
 
-        // Limpa os dias anteriores
-        dateNavFicha.innerHTML = '';
-
-        // Cria os últimos 7 dias, incluindo hoje
-        for (let i = 6; i >= 0; i--) {
-
-            const data = new Date(hoje);
-
-            data.setDate(hoje.getDate() - i);
-
-            const numero = data.getDate();
-
-            const diaDaSemana = data.toLocaleDateString('pt-BR', {
-                weekday: 'short'
+        (ficha.treinos || []).forEach(function(treino) {
+            (treino.execucoes || []).forEach(function(data) {
+                datasFicha.add(data);
             });
+        });
 
-            const eHoje = i === 0;
+        nav.innerHTML = '';
+        for (let i = 6; i >= 0; i--) {
+            const data = new Date();
+            data.setHours(0, 0, 0, 0);
+            data.setDate(data.getDate() - i);
+            const hoje = i === 0;
+            const classes = datasFicha.has(dataLocal(data)) ? ' treino-feito' : '';
 
-            dateNavFicha.innerHTML += `
-                <div class="day-item ${eHoje ? 'day-active' : ''}">
-                    <div class="day-number">${numero}</div>
-                    <div class="day-name">${diaDaSemana}</div>
-                </div>
-            `;
+            nav.innerHTML += `
+                <div class="day-item ${hoje ? 'day-active' : ''}${classes}">
+                    <div class="day-number">${data.getDate()}</div>
+                    <div class="day-name">${data.toLocaleDateString('pt-BR', { weekday: 'short' })}</div>
+                </div>`;
         }
+
+        container.appendChild(card);
     });
 }
-// Gera o calendário inicialmente
-gerarCalendario(Number(monthSelector.value));
 
-// Gera os últimos sete dias para as ofensivas individuais
-gerarUltimosSete();
+const dados = obterDados();
+const hoje = new Date();
+seletorMes.value = String(hoje.getMonth());
+gerarCalendario(hoje.getMonth(), dados.datas);
+gerarCalendariosDasFichas(dados.usuario);
 
-// Quando o usuário trocar o mês
-monthSelector.addEventListener('change', function() {
-    gerarCalendario(Number(this.value));
+seletorMes.addEventListener('change', function() {
+    gerarCalendario(Number(this.value), dados.datas);
 });

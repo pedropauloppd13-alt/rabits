@@ -1,5 +1,25 @@
 let fichaIdAtual;
 
+function obterUsuarioAtual() {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const usuarioAtual = localStorage.getItem("usuarioAtual");
+    return usuarios.find(function(usuario) {
+        return usuario.id === usuarioAtual;
+    });
+}
+
+function salvarUsuario(usuario) {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const indice = usuarios.findIndex(function(item) {
+        return item.id === usuario.id;
+    });
+
+    if (indice !== -1) {
+        usuarios[indice] = usuario;
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    }
+}
+
 $(document).ready(function() {
 
     const parametros = new URLSearchParams(window.location.search);
@@ -7,7 +27,14 @@ $(document).ready(function() {
 
     fichaIdAtual = idFicha;
 
-    let fichas = JSON.parse(localStorage.getItem("fichas")) || [];
+    const usuario = obterUsuarioAtual();
+
+    if (!usuario) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const fichas = usuario.fichas || [];
 
     const ficha = fichas.find(function(f) {
         return f.id === idFicha;
@@ -22,10 +49,7 @@ $(document).ready(function() {
     if (!ficha.treinos) {
         ficha.treinos = [];
 
-        localStorage.setItem(
-            "fichas",
-            JSON.stringify(fichas)
-        );
+        salvarUsuario(usuario);
     }
 
     ficha.treinos.forEach(function(treino) {
@@ -49,10 +73,7 @@ $(document).ready(function() {
 
         ficha.treinos.push(novoTreino);
 
-        localStorage.setItem(
-            "fichas",
-            JSON.stringify(fichas)
-        );
+        salvarUsuario(usuario);
 
         criarTreino(novoTreino);
     });
@@ -85,6 +106,14 @@ function criarTreino(treino) {
     novoCard.find(".abrir").attr(
         "href",
         "edicao-treino.html?ficha=" +
+        fichaIdAtual +
+        "&treino=" +
+        treino.id
+    );
+
+    novoCard.find(".iniciar").attr(
+        "href",
+        "treino.html?ficha=" +
         fichaIdAtual +
         "&treino=" +
         treino.id
@@ -123,9 +152,8 @@ $(document).on(
         const treinoId = treinoCard
             .attr("data-id");
 
-        let fichas = JSON.parse(
-            localStorage.getItem("fichas")
-        ) || [];
+        const usuario = obterUsuarioAtual();
+        const fichas = usuario ? usuario.fichas || [] : [];
 
         const ficha = fichas.find(function(f) {
             return f.id === fichaIdAtual;
@@ -141,10 +169,7 @@ $(document).on(
             }
         );
 
-        localStorage.setItem(
-            "fichas",
-            JSON.stringify(fichas)
-        );
+        salvarUsuario(usuario);
 
         treinoCard.remove();
     }
@@ -182,9 +207,8 @@ $(document).on(
             .find(".card-title")
             .text(novoNome.trim());
 
-        let fichas = JSON.parse(
-            localStorage.getItem("fichas")
-        ) || [];
+        const usuario = obterUsuarioAtual();
+        const fichas = usuario ? usuario.fichas || [] : [];
 
         const ficha = fichas.find(function(f) {
             return f.id === fichaIdAtual;
@@ -204,10 +228,7 @@ $(document).on(
             treino.nome = novoNome.trim();
         }
 
-        localStorage.setItem(
-            "fichas",
-            JSON.stringify(fichas)
-        );
+        salvarUsuario(usuario);
 
         treinoCard
             .find(".menu-ficha")

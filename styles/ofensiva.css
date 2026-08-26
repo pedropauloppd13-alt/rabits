@@ -143,7 +143,6 @@ h3 {
     height: 28px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    padding-top: 5px;
 }
 
 .day-name {
@@ -157,6 +156,34 @@ h3 {
 .day-item:hover .day-number,
 .day-item:hover .day-name {
     background-color: #f8f8f8;
+}
+
+.day-item.treino-feito .day-number {
+    background-color: #3461ad;
+    color: white;
+    border-radius: 50%;
+}
+
+.day-item.treino-feito .day-name {
+    color: #3461ad;
+    font-weight: 600;
+}
+
+.day-item.day-active .day-number {
+    background-color: transparent;
+    color: #248AB5;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+}
+
+.day-item.day-active.treino-feito .day-number {
+    background-color: #3461ad;
+    color: white;
+}
+
+.day-item.day-active .day-name {
+    color: #248AB5;
 }
 
 .indicator-container {
@@ -419,4 +446,10 @@ h3 {
 
 .calendar .day-active:hover .day-number {
     background-color: #beedff;
+}
+
+.fichas-container .title {
+    transform: scale(1);
+    color: var(--cor-sec);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }

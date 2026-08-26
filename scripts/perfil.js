@@ -13,7 +13,7 @@ function obterUsuarioAtual() {
 const usuario = obterUsuarioAtual();
 
 if (!usuario) {
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 } else {
     camposPerfil.forEach(function(campo) {
         campo.value = usuario[campo.dataset.campo] || '';

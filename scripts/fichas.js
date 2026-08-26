@@ -1,7 +1,32 @@
-// Carrega as fichas quando a página abre
-$(document).ready(function() {
+function obterUsuarioAtual() {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const usuarioAtual = localStorage.getItem("usuarioAtual");
+    return usuarios.find(function(usuario) {
+        return usuario.id === usuarioAtual;
+    });
+}
 
-    let fichas = JSON.parse(localStorage.getItem("fichas")) || [];
+function salvarUsuario(usuario) {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const indice = usuarios.findIndex(function(item) {
+        return item.id === usuario.id;
+    });
+
+    if (indice !== -1) {
+        usuarios[indice] = usuario;
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    }
+}
+
+$(document).ready(function() {
+    const usuario = obterUsuarioAtual();
+
+    if (!usuario) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const fichas = usuario.fichas || [];
 
     fichas.forEach(function(ficha) {
         criarFicha(ficha);
@@ -19,7 +44,14 @@ $("#criar-ficha-card").click(function() {
         return;
     }
 
-    let fichas = JSON.parse(localStorage.getItem("fichas")) || [];
+    const usuario = obterUsuarioAtual();
+
+    if (!usuario) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const fichas = usuario.fichas || (usuario.fichas = []);
 
     const novaFicha = {
         id: crypto.randomUUID(),
@@ -28,7 +60,7 @@ $("#criar-ficha-card").click(function() {
 
     fichas.push(novaFicha);
 
-    localStorage.setItem("fichas", JSON.stringify(fichas));
+    salvarUsuario(usuario);
 
     criarFicha(novaFicha);
 });
@@ -67,13 +99,20 @@ $(document).on("click", ".opcao-excluir", function() {
     const ficha = $(this).closest(".ficha-card");
     const id = ficha.attr("data-id");
 
-    let fichas = JSON.parse(localStorage.getItem("fichas")) || [];
+    const usuario = obterUsuarioAtual();
+
+    if (!usuario) {
+        return;
+    }
+
+    let fichas = usuario.fichas || [];
 
     fichas = fichas.filter(function(f) {
         return f.id !== id;
     });
 
-    localStorage.setItem("fichas", JSON.stringify(fichas));
+    usuario.fichas = fichas;
+    salvarUsuario(usuario);
 
     ficha.remove();
 });
@@ -98,7 +137,13 @@ $(document).on("click", ".opcao-editar", function() {
 
     ficha.find(".card-title").text(novoNome.trim());
 
-    let fichas = JSON.parse(localStorage.getItem("fichas")) || [];
+    const usuario = obterUsuarioAtual();
+
+    if (!usuario) {
+        return;
+    }
+
+    const fichas = usuario.fichas || [];
 
     const fichaEncontrada = fichas.find(function(f) {
         return f.id === id;
@@ -108,7 +153,7 @@ $(document).on("click", ".opcao-editar", function() {
         fichaEncontrada.nome = novoNome.trim();
     }
 
-    localStorage.setItem("fichas", JSON.stringify(fichas));
+    salvarUsuario(usuario);
 
     ficha.find(".menu-ficha").hide();
 });

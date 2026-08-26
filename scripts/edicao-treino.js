@@ -1,27 +1,57 @@
-const atividade = {
-    nome: '',
-    descricao: '',
-    id: 0,
-    imagem: '',
-    tipo: '',
-    series: 0,
-    repeticoes: 0,
-    duracao: 0,
-    descanso: 0,
+let usuarioAtual;
+let fichaAtual;
+let treinoAtual;
+let imagemAtividade = '';
 
-    armazenarImagem(imagem) {
+function obterUsuarioAtual() {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const idUsuario = localStorage.getItem('usuarioAtual');
+    return usuarios.find(function(usuario) {
+        return usuario.id === idUsuario;
+    });
+}
 
+function salvarUsuario(usuario) {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    const indice = usuarios.findIndex(function(item) {
+        return item.id === usuario.id;
+    });
+
+    if (indice !== -1) {
+        usuarios[indice] = usuario;
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
     }
-
 }
 
-if (!localStorage.getItem('atividadeID')) {
-    localStorage.setItem('atividadeID', 0);
+function carregarContexto() {
+    const parametros = new URLSearchParams(window.location.search);
+    const fichaId = parametros.get('ficha');
+    const treinoId = parametros.get('treino');
+    usuarioAtual = obterUsuarioAtual();
+    fichaAtual = usuarioAtual && (usuarioAtual.fichas || []).find(function(ficha) {
+        return ficha.id === fichaId;
+    });
+    treinoAtual = fichaAtual && (fichaAtual.treinos || []).find(function(treino) {
+        return treino.id === treinoId;
+    });
+
+    if (!usuarioAtual) {
+        window.location.href = 'index.html';
+        return false;
+    }
+    if (!fichaAtual) {
+        alert('Ficha não encontrada.');
+        window.location.href = 'fichas.html';
+        return false;
+    }
+    if (!treinoAtual) {
+        alert('Treino não encontrado.');
+        window.location.href = 'edicao-fichatreino.html?id=' + fichaId;
+        return false;
+    }
+    treinoAtual.atividades = treinoAtual.atividades || [];
+    return true;
 }
-
-let atvArray = JSON.parse(localStorage.getItem('atividades')) || [];
-
-let atvID = parseInt(localStorage.getItem('atividadeID'));
 
 $('#criar-atividade-card').on('click', function(e) {
     e.preventDefault();
@@ -32,7 +62,6 @@ $('#criar-atividade-card').on('click', function(e) {
 });
 
 const configAtividade = $('.config-atividade');
-let imagemAtividade = '';
 
 $('#imagem-atividade').on('change', function() {
     const arquivo = this.files[0];
@@ -96,46 +125,51 @@ $("input[name='tipo']").on('change', function() {
 
 $('#salvar').on('click', function(e) {
     e.preventDefault();
-    let atv = Object.create(atividade);
-    atv.nome = $('#nome-atividade').val();
-    atv.descricao = $('#descricao').val();
-    atv.imagem = imagemAtividade;
-    atv.tipo = $("input[name='tipo']:checked").val();
-    atv.id = atvID++;
-    localStorage.setItem('atividadeID', atvID);
-    if (atv.tipo === 'series') {
-        atv.series = parseInt($('#quantidade-series').val());
-        atv.repeticoes = parseInt($('#quantidade-repeticoes').val());
-        atv.descanso = parseInt($('#descanso-series').val());
-    } else if (atv.tipo === 'tempo') {
-        atv.duracao = parseInt($('#duracao').val());
-        atv.descanso = parseInt($('#descanso-tempo').val());
+    const tipo = $("input[name='tipo']:checked").val();
+    const atv = {
+        id: crypto.randomUUID(),
+        nome: $('#nome-atividade').val().trim(),
+        descricao: $('#descricao').val().trim(),
+        imagem: imagemAtividade,
+        tipo: tipo,
+        series: tipo === 'series' ? Number($('#quantidade-series').val()) : 0,
+        repeticoes: tipo === 'series' ? Number($('#quantidade-repeticoes').val()) : 0,
+        duracao: tipo === 'tempo' ? Number($('#duracao').val()) : 0,
+        descanso: Number($('[name="descanso"]:visible').val()) || 0
+    };
+
+    if (!atv.nome || !tipo) {
+        alert('Informe o nome e o tipo da atividade.');
+        return;
     }
 
-    console.log(atv);
-    atvArray.push(atv);
-    localStorage.setItem('atividades', JSON.stringify(atvArray));
+    treinoAtual.atividades.push(atv);
+    salvarUsuario(usuarioAtual);
     renderizarAtividades();
 });
 
 function renderizarAtividades() {
-    atvArray = JSON.parse(localStorage.getItem('atividades')) || [];
     const container = $('.atividades-container');
     container.find('.atividade').remove();
-    atvArray.forEach(atv => {
+    treinoAtual.atividades.forEach(atv => {
         const card = $(`
             <div class="card atividade" style="width: 18rem;">
-            <img src="${atv.imagem || 'images/icones/activity.svg'}" class="card-img-top" alt="Imagem da atividade">
+            <img class="card-img-top" alt="Imagem da atividade">
             <div class="card-body">
-                <h5 class="card-title">${atv.nome}</h5>
-                <p class="card-text">${atv.descricao}</p>
+            <h5 class="card-title"></h5>
+            <p class="card-text"></p>
             </div>
             </div>
         `);
+        card.find('img').attr('src', atv.imagem || 'images/icones/activity.svg');
+        card.find('.card-title').text(atv.nome);
+        card.find('.card-text').text(atv.descricao);
         container.prepend(card);
     });
 }
 
 $(document).ready(function() {
-    renderizarAtividades();
+    if (carregarContexto()) {
+        renderizarAtividades();
+    }
 });
