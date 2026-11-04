@@ -13,5 +13,5 @@ $('.submit').on('click', function(e) {
     }
 
     localStorage.setItem('usuarioAtual', usuario.id);
-    window.location.href = 'inicio.html';
+    window.location.href = 'inicio.php';
 })

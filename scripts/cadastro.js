@@ -47,5 +47,5 @@ $("#cadastrar").click(function() {
     );
 
     console.log(usuarios);
-    window.location.href = "inicio.html";
+    window.location.href = "inicio.php";
 });
