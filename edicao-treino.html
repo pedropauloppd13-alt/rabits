@@ -23,61 +23,87 @@
     </div>
     <!-- Main -->
     <main>
-        <div class="modal" id="dialog-criar-atividade" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Insira os detalhes da atividade</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-floating mb-3">
-                            <input type="text" id="nome-atividade" class="form-control" placeholder="Minha atividade">
-                            <label for="nome-atividade">Nome da atividade</label>
-                        </div>
-                        <label for="descricao">Descrição</label>
-                        <textarea class="form-control" id="descricao" rows="3"></textarea>
-                        <div class="input-group mb-3">
-                            <input type="file" accept="image/png, image/gif, image/jpeg" class="form-control mt-2" id="imagem-atividade" aria-describedby="inputGroupFileAddon03" aria-label="Upload">
-                        </div>
-                        <div class="container">
-                            <div class="row col-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="tipo" id="series" value="series">
-                                    <label class="form-check-label" for="series">Séries</label>
-                                </div>
+<div class="modal fade" id="dialog-criar-atividade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="tipo" id="tempo" value="tempo">
-                                    <label class="form-check-label" for="tempo">Tempo</label>
-                                </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Insira os detalhes da atividade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-                            </div>
-                            <div class="row col-10">
-                                <div class="config-atividade">
-                                    <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="quantidade-series" name="series" min="1" placeholder="3">
-                                        <label for="quantidade-series">Quantidade de séries</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="quantidade-repeticoes" name="repeticoes" min="1" placeholder="10">
-                                        <label for="quantidade-repeticoes">Repetições por série</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="descanso-series" name="descanso" min="0" placeholder="60">
-                                        <label for="descanso-series">Descanso (segundos)</label>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="modal-body">
+
+                <div class="form-floating mb-3">
+                    <input type="text" id="nome-atividade" class="form-control" placeholder="Minha atividade">
+                    <label for="nome-atividade">Nome da atividade</label>
+                </div>
+
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control mb-3" id="descricao" rows="3"></textarea>
+
+                <div class="mb-3">
+                    <input type="file" accept="image/png, image/gif, image/jpeg"
+                        class="form-control" id="imagem-atividade">
+                </div>
+
+                <!-- Tipo de atividade -->
+                <div class="row g-3">
+
+                    <div class="col-12 col-sm-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo"
+                                id="series" value="series">
+                            <label class="form-check-label" for="series">Séries</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo"
+                                id="tempo" value="tempo">
+                            <label class="form-check-label" for="tempo">Tempo</label>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="salvar">Save changes</button>
+
+                    <!-- Configurações -->
+                    <div class="col-12 col-sm-9">
+                        <div class="config-atividade">
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control"
+                                    id="quantidade-series" min="1" placeholder="3">
+                                <label for="quantidade-series">Quantidade de séries</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control"
+                                    id="quantidade-repeticoes" min="1" placeholder="10">
+                                <label for="quantidade-repeticoes">Repetições por série</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control"
+                                    id="descanso-series" min="0" placeholder="60">
+                                <label for="descanso-series">Descanso (segundos)</label>
+                            </div>
+
+                        </div>
                     </div>
+
                 </div>
             </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+                <button type="button" class="btn btn-primary" id="salvar">
+                    Salvar alterações
+                </button>
+            </div>
+
         </div>
+    </div>
+</div>
         <div class="container atividades-container">
             <!-- Cards -->
 

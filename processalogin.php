@@ -6,7 +6,7 @@ $usuario = $_POST['email'];
 $senha = $_POST['password'];
 
 if (empty($usuario)||empty($senha)){
-    echo 'credenciais inválidas!'
+    echo 'credenciais inválidas!';
     die();
 } else {
     $_SESSION['logon']=[

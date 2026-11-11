@@ -93,3 +93,65 @@
     width: 100px;
     height: 100px;
 }
+
+/* MODAL */
+#dialog-criar-atividade {
+    z-index: 1055;
+}
+
+#dialog-criar-atividade .modal-dialog {
+    width: calc(100% - 2rem);
+    max-width: 550px;
+    margin: 1rem auto;
+}
+
+#dialog-criar-atividade .modal-content {
+    width: 100%;
+    border-radius: 12px;
+}
+
+#dialog-criar-atividade .modal-body {
+    padding: 1.5rem;
+}
+
+#dialog-criar-atividade .form-control {
+    width: 100%;
+}
+
+.config-atividade {
+    width: 100%;
+}
+
+/* CELULAR */
+@media (max-width: 767px) {
+
+    #dialog-criar-atividade .modal-dialog {
+        max-width: none;
+        margin: 0.5rem auto;
+        width: calc(100% - 1rem);
+    }
+
+    #dialog-criar-atividade .modal-body {
+        padding: 1rem;
+    }
+
+    #dialog-criar-atividade .modal-title {
+        font-size: 1rem;
+    }
+
+    #dialog-criar-atividade .modal-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    #dialog-criar-atividade .modal-footer .btn {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+.form-check-input,
+.form-control {
+    border-color: var(--cor-pri); 
+}
