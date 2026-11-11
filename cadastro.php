@@ -32,8 +32,13 @@
             </button>
 
             <a href="index.php">Já tenho uma conta</a>
-
+            
+            <span class="badge theme-primary d-none" id="carregando">
+                <span class="spinner-border" aria-hidden="true"></span>
+                <span role="status">Loading</span>
+            </span>
         </div>
+
     </main>
     <script src="scripts/jquery-4.0.0.min.js"></script>
     <script src="scripts/cadastro.js"></script>

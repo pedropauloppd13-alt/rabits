@@ -17,6 +17,7 @@
 
     <!--Main-->
     <main class="d-flex flex-column justify-content-center align-items-center">
+        <form>
         <div class="form">
             <h1>Bem vindo!</h1>
             <div class="subtitle">Vamos voltar aos treinos!</div>

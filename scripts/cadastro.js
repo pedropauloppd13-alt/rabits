@@ -1,51 +1,21 @@
-$("#cadastrar").click(function() {
+$("#cadastrar").click(function(event) {
+    
+    event.preventDefault();
+    $("carregando").show();
 
-    const nome = $("#nome").val().trim();
-    const email = $("#email").val().trim().toLowerCase();
-    const senha = $("#senha").val();
-    const confirmarSenha = $("#confirmar-senha").val();
+    let nome = $("#nome").val();
+    let senha =  $("#senha").value;
+    let senhaConf = $("#confirmar-senha").value;
+    let email = $("#email").val();
 
-    if (nome === "" || email === "" || senha === "" || confirmarSenha === "") {
-        alert("Preencha todos os campos.");
+    if(senha != senhaConf){
         return;
     }
 
-    if (senha !== confirmarSenha) {
-        alert("As senhas não coincidem.");
-        return;
-    }
 
-    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-
-    const emailExiste = usuarios.some(function(usuario) {
-        return usuario.email === email;
+    $.ajax({
+        method: "POST",
+        url: "processalogin.php",
+        data: {nome: nome, senha: senha, email: email}
     });
-
-    if (emailExiste) {
-        alert("Este e-mail já está cadastrado.");
-        return;
-    }
-
-    const novoUsuario = {
-        id: crypto.randomUUID(),
-        nome: nome,
-        email: email,
-        senha: senha,
-        fichas: []
-    };
-
-    usuarios.push(novoUsuario);
-
-    localStorage.setItem(
-        "usuarios",
-        JSON.stringify(usuarios)
-    );
-
-    localStorage.setItem(
-        "usuarioAtual",
-        novoUsuario.id
-    );
-
-    console.log(usuarios);
-    window.location.href = "inicio.php";
 });
