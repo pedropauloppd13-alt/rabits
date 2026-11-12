@@ -15,37 +15,14 @@ $("#cadastrar").click(function() {
         return;
     }
 
-    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    //antes de enviar
 
-    const emailExiste = usuarios.some(function(usuario) {
-        return usuario.email === email;
-    });
-
-    if (emailExiste) {
-        alert("Este e-mail já está cadastrado.");
-        return;
-    }
-
-    const novoUsuario = {
-        id: crypto.randomUUID(),
-        nome: nome,
-        email: email,
-        senha: senha,
-        fichas: []
-    };
-
-    usuarios.push(novoUsuario);
-
-    localStorage.setItem(
-        "usuarios",
-        JSON.stringify(usuarios)
-    );
-
-    localStorage.setItem(
-        "usuarioAtual",
-        novoUsuario.id
-    );
-
-    console.log(usuarios);
-    window.location.href = "inicio.php";
-});
+    $.ajax(
+        {url: "processa-cadastro.php", 
+            method: "post",
+            data: {nome: nome, email: email, senha:senha}
+        }
+    ).done( function(){
+        //quando terminar
+    })
+}) 
