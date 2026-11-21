@@ -1,41 +1,42 @@
 <?php
-    include "conexao.php";
 
-    $nome = htmlspecialchars($_POST['nome']);
-    $email = htmlspecialchars($_POST['email']);
-    $senha = trim($_POST['senha']);
+require_once __DIR__ . '/config/database.php';
 
-    if(empty($nome) || empty($email) || empty($senha)){
-        echo "Preencha todos os campos!";
-        exit;
-    }
-    else if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-        echo "E-mail inválido!";
+$nome = trim($_POST['nome'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$senha = trim($_POST['senha'] ?? '');
 
-        exit;
-    }
-    
-    $senha = password_hash($senha, PASSWORD_DEFAULT);
+if (empty($nome) || empty($email) || empty($senha)) {
+    exit('Preencha todos os campos!');
+}
 
-    
-    try{   
-    $sql = "INSERT INTO `rabits`.`usuario` (`nome`, `dataNascimento`, `senha`, `pesoCorporal`, `altura`, `email`) VALUES ('$nome', NULL, '$senha', NULL, NULL, '$email');";
-    if (mysqli_query($conexao, $sql)) {
-        echo "sucesso";
-        mysqli_close($conexao);
-        exit;
-    } else {
-        echo "Erro ao cadastrar: " . mysqli_error($conexao);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    exit('E-mail inválido!');
+}
+
+$senha = password_hash($senha, PASSWORD_DEFAULT);
+
+try {
+    $sql = "INSERT INTO usuario
+            (nome, dataNascimento, senha, pesoCorporal, altura, email)
+            VALUES
+            (:nome, NULL, :senha, NULL, NULL, :email)";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        ':nome' => $nome,
+        ':senha' => $senha,
+        ':email' => $email
+    ]);
+
+    echo 'sucesso';
+
+} catch (PDOException $e) {
+    if ($e->getCode() === '23000') {
+        exit('E-mail já cadastrado!');
     }
-    }
-    catch (mysqli_sql_exception $e){
-        //erro de duplicidade de e-mail (de acordo com o copilot)
-        if ((int) $e->getCode() === 1062) {
-            echo "E-mail já cadastrado!";
-        } else {
-            error_log($e->getMessage());
-            echo "Erro ao cadastrar.";
-        }
-        mysqli_close($conexao);
-        exit;
-    }
+
+    error_log($e->getMessage());
+    exit('Erro ao cadastrar.');
+}
