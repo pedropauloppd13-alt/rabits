@@ -1,0 +1,181 @@
+main {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.form {
+    background-color: var(--cor-ter);
+    width: 500px;
+    min-height: 620px;
+    padding: 45px 50px;
+    border-radius: 25px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.35);
+}
+
+
+/* TÍTULO */
+
+.form h1 {
+    color: #fff;
+    font-family: sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    text-align: center;
+    text-shadow: 6px 6px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+/* SUBTÍTULO */
+
+.subtitle {
+    color: #e8e8e8;
+    font-family: sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0;
+}
+
+
+/* CONTAINER DOS INPUTS */
+
+.input-container {
+    height: 65px;
+    position: relative;
+    width: 100%;
+}
+
+
+/* ESPAÇAMENTO DOS INPUTS */
+
+.ic1 {
+    margin-top: 15px;
+}
+
+.ic2 {
+    margin-top: 15px;
+}
+
+
+/* INPUT */
+
+.input {
+    background-color: var(--cor-quar);
+    border-radius: 15px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 20px;
+    height: 100%;
+    outline: none;
+    padding: 0 25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+
+/* ÁREA ATRÁS DO LABEL */
+
+.cut {
+    background-color: var(--cor-ter);
+    border-radius: 10px;
+    height: 22px;
+    left: 25px;
+    top: -22px;
+    position: absolute;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 105px;
+}
+
+.cut-short {
+    width: 60px;
+}
+
+
+/* LABEL */
+
+.iLabel {
+    color: #dce9ee;
+    font-family: sans-serif;
+    font-size: 20px;
+    left: 25px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 23px;
+}
+
+
+/* LABEL AO CLICAR */
+
+.input:focus~.cut {
+    transform: translateY(8px);
+}
+
+.input:focus~.iLabel {
+    transform: translateY(-35px) translateX(10px) scale(0.7);
+    color: #dce9ee;
+    font-weight: bold;
+}
+
+
+/* LABEL QUANDO PREENCHIDO */
+
+.input:not(:focus):valid~.iLabel {
+    opacity: 0;
+}
+
+
+/* BOTÃO */
+
+.submit {
+    background-color: #00a2e8;
+    border-radius: 15px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    height: 60px;
+    margin-top: 15px;
+    text-align: center;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.submit:hover {
+    background-color: #248AB5;
+    transform: scale(1.02);
+}
+
+.submit:active {
+    transform: scale(0.98);
+}
+
+.form a {
+    color: #fff;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 17px;
+    margin-top: 7px;
+    transition: 0.2s;
+}
+
+.form a:hover {
+    color: var(--cor-pri);
+    text-decoration: underline;
+}
