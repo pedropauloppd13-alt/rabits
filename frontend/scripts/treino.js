@@ -25,7 +25,7 @@ $(document).ready(function() {
     });
 
     if (!usuarioAtual) {
-        window.location.href = "index.html";
+        window.location.href = "index.php";
         return;
     }
 
@@ -40,7 +40,7 @@ $(document).ready(function() {
     if (!fichaAtual) {
         alert("Ficha não encontrada.");
         window.location.href =
-            "fichas.html";
+            "fichas.php";
         return;
     }
 
@@ -56,7 +56,7 @@ $(document).ready(function() {
     if (!treinoAtual) {
         alert("Treino não encontrado.");
         window.location.href =
-            "edicao-fichatreino.html?id=" +
+            "edicao-fichatreino.php?id=" +
             fichaIdAtual;
         return;
     }

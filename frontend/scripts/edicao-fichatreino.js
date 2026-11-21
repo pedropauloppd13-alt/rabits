@@ -30,7 +30,7 @@ $(document).ready(function() {
     const usuario = obterUsuarioAtual();
 
     if (!usuario) {
-        window.location.href = "index.html";
+        window.location.href = "index.php";
         return;
     }
 
@@ -42,7 +42,7 @@ $(document).ready(function() {
 
     if (!ficha) {
         alert("Ficha não encontrada.");
-        window.location.href = "fichas.html";
+        window.location.href = "fichas.php";
         return;
     }
 
@@ -105,7 +105,7 @@ function criarTreino(treino) {
 
     novoCard.find(".abrir").attr(
         "href",
-        "edicao-treino.html?ficha=" +
+        "edicao-treino.php?ficha=" +
         fichaIdAtual +
         "&treino=" +
         treino.id
@@ -113,7 +113,7 @@ function criarTreino(treino) {
 
     novoCard.find(".iniciar").attr(
         "href",
-        "treino.html?ficha=" +
+        "treino.php?ficha=" +
         fichaIdAtual +
         "&treino=" +
         treino.id

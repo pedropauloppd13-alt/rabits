@@ -22,7 +22,7 @@ $(document).ready(function() {
     const usuario = obterUsuarioAtual();
 
     if (!usuario) {
-        window.location.href = "index.html";
+        window.location.href = "index.php";
         return;
     }
 
@@ -47,7 +47,7 @@ $("#criar-ficha-card").click(function() {
     const usuario = obterUsuarioAtual();
 
     if (!usuario) {
-        window.location.href = "index.html";
+        window.location.href = "index.php";
         return;
     }
 
@@ -165,6 +165,6 @@ $(document).on("click", ".ficha-card .card-img-top", function() {
 
     const id = ficha.attr("data-id");
 
-    window.location.href = "edicao-fichatreino.html?id=" + id;
+    window.location.href = "edicao-fichatreino.php?id=" + id;
 
 });

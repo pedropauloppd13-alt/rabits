@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/minhas-cores-claro.css">
     <link rel="stylesheet" href="styles/style.css">
@@ -12,15 +14,7 @@
 </head>
 
 <body class="d-flex flex-column">
-    <!--Navbar-->
-    <div class="barra-de-nav" id="nav-principal">
-        <a class="title" href="index.html">RABITS</a>
-        <a class="nav-bnt-selec" id="bnt-inicial" href="inicio.html"><img src="images/icones/rabit.svg" alt="Rabbit Icon"></a>
-        <a class="nav-bnt" id="bnt-ficha" href="fichas.html"><img src="images/icones/card-list.svg" alt="Card List Icon"></a>
-        <a class="nav-bnt" id="bnt-ofensiva" href="ofensiva.html"><img src="images/icones/fire.svg" alt="Fire Icon"></a>
-        <a class="nav-bnt" id="bnt-perfil" href="perfil.html"><img src="images/icones/person-fill.svg" alt="Profile Icon"></a>
-    </div>
-    <!--Main-->
+
     <main>
         <div class="form">
 
@@ -36,16 +30,27 @@
             <input type="password" id="confirmar-senha" placeholder="Confirmar senha">
 
             <button id="cadastrar">
-            Cadastrar
+                Cadastrar
             </button>
 
-            <a href="index.html">Já tenho uma conta</a>
+            <a href="index.php">Já tenho uma conta</a>
+
+            <p>
+                <span class="badge theme-danger d-none" id="erro">
+                    <span role="status"></span>
+                </span>
+            </p>
+
+            <span class="badge theme-primary d-none" id="carregando">
+                <span class="spinner-border" aria-hidden="true"></span>
+                <span role="status">Carregando</span>
+            </span>
 
         </div>
     </main>
+
     <script src="scripts/jquery-4.0.0.min.js"></script>
     <script src="scripts/cadastro.js"></script>
 
 </body>
-
 </html>

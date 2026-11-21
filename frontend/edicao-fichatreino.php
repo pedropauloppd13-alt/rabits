@@ -12,14 +12,7 @@
 </head>
 
 <body class="d-flex flex-column">
-    <!--Navbar-->
-    <div class="barra-de-nav" id="nav-principal">
-        <a class="title" href="index.html">RABITS</a>
-        <a class="nav-bnt-selec" id="bnt-inicial" href="inicio.html"><img src="images/icones/rabit.svg" alt="Rabbit Icon"></a>
-        <a class="nav-bnt" id="bnt-ficha" href="fichas.html"><img src="images/icones/card-list.svg" alt="Card List Icon"></a>
-        <a class="nav-bnt" id="bnt-ofensiva" href="ofensiva.html"><img src="images/icones/fire.svg" alt="Fire Icon"></a>
-        <a class="nav-bnt" id="bnt-perfil" href="perfil.html"><img src="images/icones/person-fill.svg" alt="Profile Icon"></a>
-    </div>
+    <?php include 'nav.php'?>
     <!-- Main -->
     <main>
         <div class="container" id="ficha-container">
@@ -34,7 +27,7 @@
                             <img src="images/icones/gear-fill.svg" alt="Edit">
                         </button>
                         <div class="menu-ficha">
-                            <button class="opcao-editar">Editar</button>
+                            <button class="opcao-editar">Renomear</button>
                             <button class="opcao-excluir">Excluir</button>
                         </div>
                     </div>

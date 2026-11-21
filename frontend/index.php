@@ -13,16 +13,11 @@
 <script src="scripts/jquery-4.0.0.min.js"></script>
 
 <body class="d-flex flex-column">
-    <!--Navbar-->
-    <div class="barra-de-nav" id="nav-principal">
-        <a class="title" href="inicio.html">RABITS</a>
-        <a class="nav-bnt-selec" id="bnt-inicial" href="inicio.html"><img src="images/icones/rabit.svg" alt="Rabbit Icon"></a>
-        <a class="nav-bnt" id="bnt-ficha" href="fichas.html"><img src="images/icones/card-list.svg" alt="Card List Icon"></a>
-        <a class="nav-bnt" id="bnt-ofensiva" href="ofensiva.html"><img src="images/icones/fire.svg" alt="Fire Icon"></a>
-        <a class="nav-bnt" id="bnt-perfil" href="perfil.html"><img src="images/icones/person-fill.svg" alt="Profile Icon"></a>
-    </div>
+        <?php include 'nav.php'?>
+
     <!--Main-->
     <main class="d-flex flex-column justify-content-center align-items-center">
+        <form>
         <div class="form">
             <h1>Bem vindo!</h1>
             <div class="subtitle">Vamos voltar aos treinos!</div>
@@ -38,7 +33,7 @@
                 <label class="iLabel" for="password">Senha</label>
             </div>
             <button class="submit" type="submit">Entrar</button>
-            <a href="cadastro.html">Ainda não tenho uma conta...</a>
+            <a href="cadastro.php">Ainda não tenho uma conta...</a>
         </div>
     </main>
 </body>

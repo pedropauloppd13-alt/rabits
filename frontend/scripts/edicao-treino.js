@@ -36,17 +36,17 @@ function carregarContexto() {
     });
 
     if (!usuarioAtual) {
-        window.location.href = 'index.html';
+        window.location.href = 'index.php';
         return false;
     }
     if (!fichaAtual) {
         alert('Ficha não encontrada.');
-        window.location.href = 'fichas.html';
+        window.location.href = 'fichas.php';
         return false;
     }
     if (!treinoAtual) {
         alert('Treino não encontrado.');
-        window.location.href = 'edicao-fichatreino.html?id=' + fichaId;
+        window.location.href = 'edicao-fichatreino.php?id=' + fichaId;
         return false;
     }
     treinoAtual.atividades = treinoAtual.atividades || [];
@@ -80,7 +80,7 @@ $('#imagem-atividade').on('change', function() {
 
 function renderizarConfigAtividade(tipo) {
     if (tipo === 'series') {
-        configAtividade.html(`
+        configAtividade.php(`
             <div class="form-floating mb-3">
                 <input type="number" class="form-control" id="quantidade-series"
                     name="series" min="1" placeholder="3">
@@ -101,7 +101,7 @@ function renderizarConfigAtividade(tipo) {
     }
 
     if (tipo === 'tempo') {
-        configAtividade.html(`
+        configAtividade.php(`
             <div class="form-floating mb-3">
                 <input type="number" class="form-control" id="duracao"
                     name="duracao" min="1" placeholder="30">
