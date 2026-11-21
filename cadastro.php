@@ -32,7 +32,11 @@
             </button>
 
             <a href="index.php">Já tenho uma conta</a>
-            
+            <p>
+                <span class="badge theme-danger d-none" id="erro">
+                    <span role="status"></span>
+                </span>
+            </p>
             <span class="badge theme-primary d-none" id="carregando">
                 <span class="spinner-border" aria-hidden="true"></span>
                 <span role="status">Loading</span>
