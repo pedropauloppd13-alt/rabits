@@ -33,7 +33,7 @@
                 Cadastrar
             </button>
 
-            <a href="index.html">Já tenho uma conta</a>
+            <a href="index.php">Já tenho uma conta</a>
 
             <p>
                 <span class="badge theme-danger d-none" id="erro">

@@ -35,7 +35,7 @@ $("#cadastrar").click(function(event) {
             console.log("Resposta do PHP:", response);
 
             if (response.trim() === "sucesso") {
-                window.location.href = "index.html";
+                window.location.href = "index.php";
             } else {
                 $("#erro").removeClass("d-none");
                 $("#erro span").text(response);
