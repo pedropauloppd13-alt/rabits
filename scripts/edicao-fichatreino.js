@@ -7,7 +7,7 @@ function obterUsuarioAtual() {
         return usuario.id === usuarioAtual;
     });
 }
-
+//If(diego.morte()){karine.louca(true)};
 function salvarUsuario(usuario) {
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
     const indice = usuarios.findIndex(function(item) {
