@@ -28,12 +28,17 @@
                 <label class="iLabel" for="email">Email</label>
             </div>
             <div class="input-container ic2">
-                <input placeholder="" type="password" class="input" id="password" required>
+                <input placeholder="" type="password" class="input" id="senha" required>
                 <div class="cut cut-short"></div>
-                <label class="iLabel" for="password">Senha</label>
+                <label class="iLabel" for="senha">Senha</label>
             </div>
-            <button class="submit" type="submit">Entrar</button>
+            <button class="submit" type="submit" id="entrar">Entrar</button>
             <a href="cadastro.php">Ainda não tenho uma conta...</a>
+            <p>
+                <span class="badge theme-danger d-none" id="erro">
+                    <span role="status"></span>
+                </span>
+            </p>
         </div>
     </main>
 </body>

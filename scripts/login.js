@@ -1,32 +1,23 @@
-$("#cadastrar").click(function(event) {
+$("#entrar").click(function(event) {
     event.preventDefault();
-
-    const nome = $("#nome").val().trim();
+    
     const email = $("#email").val().trim().toLowerCase();
     const senha = $("#senha").val();
-    const senhaConf = $("#confirmar-senha").val();
 
     $("#erro").addClass("d-none");
 
-    if (!nome || !email || !senha || !senhaConf) {
+    if (!email || !senha) {
         $("#erro").removeClass("d-none");
         $("#erro span").text("Preencha todos os campos.");
-        return;
-    }
-
-    if (senha !== senhaConf) {
-        $("#erro").removeClass("d-none");
-        $("#erro span").text("As senhas são diferentes.");
         return;
     }
 
     $("#carregando").removeClass("d-none");
 
     $.ajax({
-            url: "../backend/processa-cadastro.php",
+            url: "backend/processa-login.php",
             method: "POST",
             data: {
-                nome: nome,
                 email: email,
                 senha: senha
             }
@@ -35,10 +26,13 @@ $("#cadastrar").click(function(event) {
             console.log("Resposta do PHP:", response);
 
             if (response.trim() === "sucesso") {
-                window.location.href = "index.php";
+                $("#carregando").addClass("d-none");
+                console.log("sucesso");
+                window.location.href = "inicio.php";
             } else {
                 $("#erro").removeClass("d-none");
                 $("#erro span").text(response);
+                console.log("erro");
             }
         });
 });
