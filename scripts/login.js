@@ -28,7 +28,7 @@ $("#entrar").click(function(event) {
             if (response.trim() === "sucesso") {
                 $("#carregando").addClass("d-none");
                 console.log("sucesso");
-                window.location.href = "inicio.php";
+                window.location.href = "perfil.php";
             } else {
                 $("#erro").removeClass("d-none");
                 $("#erro span").text(response);

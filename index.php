@@ -12,8 +12,7 @@
 </head>
 <script src="scripts/jquery-4.0.0.min.js"></script>
 
-<body class="d-flex flex-column">
-        <?php include 'nav.php'?>
+<body >
 
     <!--Main-->
     <main class="d-flex flex-column justify-content-center align-items-center">

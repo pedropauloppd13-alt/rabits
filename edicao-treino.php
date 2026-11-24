@@ -1,3 +1,6 @@
+<?php
+include 'backend/login-check.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 

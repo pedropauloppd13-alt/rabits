@@ -1,3 +1,6 @@
+<?php
+include 'backend/login-check.php';
+?> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,18 +12,14 @@
     <link rel="stylesheet" href="styles/minhas-cores-claro.css">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/style-perfil.css">
+    <script src="scripts/jquery-4.0.0.min.js"></script>
 
 </head>
 
 <body class="d-flex flex-column">
     <!--Navbar-->
-    <div class="barra-de-nav" id="nav-principal">
-        <a class="title" href="index.php">RABITS</a>
-        <a class="nav-bnt-selec" id="bnt-inicial" href="inicio.php"><img src="images/icones/rabit.svg" alt="Rabbit Icon"></a>
-        <a class="nav-bnt" id="bnt-ficha" href="fichas.php"><img src="images/icones/card-list.svg" alt="Card List Icon"></a>
-        <a class="nav-bnt" id="bnt-ofensiva" href="ofensiva.php"><img src="images/icones/fire.svg" alt="Fire Icon"></a>
-        <a class="nav-bnt" id="bnt-perfil" href="perfil.php"><img src="images/icones/person-fill.svg" alt="Profile Icon"></a>
-    </div>
+    <?php include 'nav.php'?>
+    <?php include 'backend/config/database.php';?>
     <!--Main-->
     <main>
         <div class="container d-flex justify-content-center align-items-center text-center flex-wrap">
@@ -34,19 +33,19 @@
                     <div class="dados m-4">
                         <div class="texto">
                             <h6 class="tag-text info" id="tag-nome">Nome:</h6><br>
-                            <input class="edit-perfil info info-text" id="nome-perfil" data-campo="nome" placeholder="#####" disabled>
+                            <input class="edit-perfil info info-text" id="nome-perfil" data-campo="nome" value="<?php echo $_SESSION['usuario_nome']; ?>" disabled>
                         </div>
                         <div class="texto">
                             <h6 class="tag-text info" id="tag-email">E-mail:</h6><br>
-                            <input class="edit-perfil info info-text" id="email-perfil" data-campo="email" type="email" placeholder="email@exemplo.com" disabled>
+                            <input class="edit-perfil info info-text" id="email-perfil" data-campo="email" type="email" value="<?php echo $_SESSION['usuario_email']; ?>" disabled>
                         </div>
                         <div class="texto">
                             <h6 class="tag-text info" id="tag-altura">Altura:</h6><br>
-                            <input class="edit-perfil info info-text" id="altura-perfil" data-campo="altura" placeholder="#.##m" disabled>
+                            <input class="edit-perfil info info-text" id="altura-perfil" data-campo="altura" value="<?php echo $_SESSION['usuario_altura']; ?>" disabled>
                         </div>
                         <div class="texto">
                             <h6 class="tag-text info" id="tag-peso">Peso:</h6><br>
-                            <input class="edit-perfil info info-text" id="peso-perfil" data-campo="peso" placeholder="##kg" disabled>
+                            <input class="edit-perfil info info-text" id="peso-perfil" data-campo="peso" value="<?php echo $_SESSION['usuario_peso']; ?>" disabled>
                         </div>
                         <div class="edit nav-bnt" id="edit-perfil"><img class="edit" src="images/icones/pencil-square.svg"></div>
                     </div>

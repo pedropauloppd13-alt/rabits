@@ -27,7 +27,11 @@ try {
 
     $_SESSION['usuario_id'] = $usuario['id'];
     $_SESSION['usuario_nome'] = $usuario['nome'];
-
+    $_SESSION['usuario_email'] = $usuario['email'];
+    $_SESSION['data_nascimento'] = $usuario['dataNascimento'];
+    $_SESSION['usuario_peso'] = $usuario['pesoCorporal'];
+    $_SESSION['usuario_altura'] = $usuario['altura'];
+        
     echo 'sucesso';
 
 } catch (PDOException $e) {

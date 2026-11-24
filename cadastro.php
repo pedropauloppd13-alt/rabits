@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="styles/cadastro.css">
 </head>
 
-<body class="d-flex flex-column">
+<body>
 
     <main>
         <div class="form">
