@@ -22,6 +22,9 @@ include 'backend/login-check.php';
     <?php include 'backend/config/database.php';?>
     <!--Main-->
     <main>
+        <div id="loggout">
+            <a href="backend/logout.php" class="btn btn-primary">Sair</a>
+        </div>
         <div class="container d-flex justify-content-center align-items-center text-center flex-wrap">
             <div class="row">
                 <div>
@@ -41,11 +44,11 @@ include 'backend/login-check.php';
                         </div>
                         <div class="texto">
                             <h6 class="tag-text info" id="tag-altura">Altura:</h6><br>
-                            <input class="edit-perfil info info-text" id="altura-perfil" data-campo="altura" value="<?php echo $_SESSION['usuario_altura']; ?>" disabled>
+                            <input class="edit-perfil info info-text" id="altura-perfil" data-campo="altura" value="<?php echo str_replace('.', ',', $_SESSION['usuario_altura']); ?>" disabled>
                         </div>
                         <div class="texto">
                             <h6 class="tag-text info" id="tag-peso">Peso:</h6><br>
-                            <input class="edit-perfil info info-text" id="peso-perfil" data-campo="peso" value="<?php echo $_SESSION['usuario_peso']; ?>" disabled>
+                            <input class="edit-perfil info info-text" id="peso-perfil" data-campo="peso" value="<?php echo str_replace('.', ',', $_SESSION['usuario_peso']); ?>" disabled>
                         </div>
                         <div class="edit nav-bnt" id="edit-perfil"><img class="edit" src="images/icones/pencil-square.svg"></div>
                     </div>
