@@ -2,7 +2,7 @@
 include 'backend/login-check.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -28,20 +28,24 @@ include 'backend/login-check.php';
             <img src="images/icones/plus-lg.svg" class="card-img-top" alt="+">
         </div>
 
-        <!--MODELO DE FICHA-->
-        <div class="card ficha-card" style="display: none;">
-            <h5 class="card-title text-white">NOME</h5>
+       <!-- MODELO DE FICHA -->
+        <div class="card ficha-card" id="modelo-ficha" style="display: none;">
 
-            <img src="images/icones/plus-lg.svg" class="card-img-top" alt="...">
+            <h5 class="card-title text-white nome-ficha">NOME</h5>
+
+            <img src="images/icones/plus-lg.svg"
+                class="card-img-top"
+                alt="Adicionar atividade">
 
             <button class="btn btn-primary editar-ficha">
-                <img src="images/icones/gear-fill.svg" alt="Edit">
+                <img src="images/icones/gear-fill.svg" alt="Editar">
             </button>
 
             <div class="menu-ficha">
                 <button class="opcao-editar">Editar</button>
                 <button class="opcao-excluir">Excluir</button>
             </div>
+
         </div>
     </main>
 

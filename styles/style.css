@@ -76,6 +76,10 @@ main {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+#rabit {
+    transform: scale(3);
+}
+
 
 /* Extra small devices (phones, 600px and down) */
 
@@ -110,6 +114,9 @@ main {
     }
     #bnt-inicial {
         display: none;
+    }
+    #rabit {
+        transform: scale(2);
     }
 }
 
@@ -151,21 +158,7 @@ main {
         height: 120px;
         object-fit: cover;
     }
-}
-
-
-/*CARDS*/
-
-.card-img-top {
-    height: 200px;
-    object-fit: cover;
-}
-
-.card {
-    overflow: hidden;
-}
-
-.card:hover {
-    transform: scale(1.03);
-    transition: 0.2s;
+    #rabit {
+        transform: scale(2);
+    }
 }
