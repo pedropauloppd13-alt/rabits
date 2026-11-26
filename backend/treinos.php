@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/login-check.php';
+session_start();
 require_once __DIR__ . '/config/database.php';
 
 header('Content-Type: application/json; charset=utf-8');
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             }
 
         //BUSCAR ATIVIDADES ASSOCIADAS À FICHA
-            $sql = "SELECT ativ.id, ativ.nome, ativ.series, ativ.repeticoes, ativ.tempoDescansoSegundos, ativ.peso
+            $sql = "SELECT ativ.id, ativ.nome, ativ.descricao, ativ.series, ativ.repeticoes, ativ.tempoDescansoSegundos, ativ.tempo, ativ.peso
                     FROM atividade ativ
                     INNER JOIN atividade_has_fichaTreino ativft
                     ON ativ.id = ativft.atividade_id
@@ -112,10 +112,12 @@ if ($acao === 'criar') {
 
     //RECEBER
     $nome = trim($_POST['nome'] ?? '');
-    $series = trim($_POST['series'] ?? null);
-    $repeticoes = trim($_POST['repeticoes'] ?? null);
-    $tempoDescansoSegundos = trim($_POST['tempoDescansoSegundos'] ?? null);
-    $peso = trim($_POST['peso'] ?? null);
+    $descricao = trim($_POST['descricao'] ?? '');
+    $series = trim((string)($_POST['series'] ?? null));
+    $repeticoes = trim((string)($_POST['repeticoes'] ?? null));
+    $tempoDescansoSegundos = trim((string)($_POST['tempoDescansoSegundos'] ?? null));
+    $tempo = trim((string)($_POST['tempo'] ?? ''));
+    $peso = trim((string)($_POST['peso'] ?? null));
 
     //FICHA
     if (!$ficha_id || $ficha_id < 1) {
@@ -125,7 +127,6 @@ if ($acao === 'criar') {
             'sucesso' => false,
             'mensagem' => 'ID da ficha inválido.'
         ]);
-
         exit;
     }
 
@@ -152,52 +153,52 @@ if ($acao === 'criar') {
         exit;
     }
 
-    //LÓGICA PARA SERIES, REPETIÇÕES, TEMPO DE DESCANSO E PESO
-    $inteiros = [
-        'series' => $series,
-        'repeticoes' => $repeticoes,
-        'tempoDescansoSegundos' => $tempoDescansoSegundos,
-        'peso' => $peso
+    //VALIDAR INTEIROS
+    $campos = [
+        'series' => [$series, 1],
+        'repeticoes' => [$repeticoes, 1],
+        'tempoDescansoSegundos' => [$tempoDescansoSegundos, 0],
+        'tempo' => [$tempo, 1]
     ];
 
-    foreach ($inteiros as $int => $valor){
-        
-        if ($valor === null || $valor === '') {
-            $valor = null;
+    foreach ($campos as $campo => [$valor, $minimo]) {
+
+        if ($valor === '') {
+            $$campo = null;
             continue;
         }
-        
-        if (filter_var($valor, FILTER_VALIDATE_INT) === false ||
-            (int) $valor < 0 ||
-            (in_array($int, ['series', 'repeticoes']) && (int) $valor < 1)) {
-           
-            http_response_code(400);
 
+        if (
+            filter_var($valor, FILTER_VALIDATE_INT) === false ||
+            (int) $valor < $minimo
+        ) {
+            http_response_code(400);
             echo json_encode([
                 'sucesso' => false,
-                'mensagem' => "O campo $int deve ser um número inteiro não negativo."
+                'mensagem' => "O campo $campo possui um valor inválido."
             ]);
 
             exit;
-
-        } elseif ($peso === '') {
-            $peso = null;
-        } elseif (!is_numeric($peso) ||
-                 !is_finite((float) $peso) ||
-                 (float) $peso < 0) {
-
-            http_response_code(400);
-
-            echo json_encode([
-                'sucesso' => false,
-                'mensagem' => "O campo $int é inválido."
-            ]);
-
-            exit;
-        } else {
-        $peso = (float) $peso;
+        }
+        $$campo = (int) $valor;
     }
-        $valor =(int) $valor;
+
+    //VALIDAR PESO
+    if ($peso === '') {
+        $peso = null;
+    } elseif (
+        !is_numeric($peso) ||
+        !is_finite((float) $peso) ||
+        (float) $peso < 0
+    ) {
+        http_response_code(400);
+        echo json_encode([
+            'sucesso' => false,
+            'mensagem' => 'O peso informado é inválido.'
+        ]);
+        exit;
+    } else {
+        $peso = (float) $peso;
     }
 
     unset($valor);
@@ -223,23 +224,23 @@ if ($acao === 'criar') {
                 'sucesso' => false,
                 'mensagem' => 'Ficha não encontrada.'
             ]);
-
             exit;
         }
 
         $pdo->beginTransaction();
 
         //ADD ATIVIDADE
-        $sql = "INSERT INTO atividade (nome, series, repeticoes, tempoDescansoSegundos, peso)
-                VALUES (:nome, :series, :repeticoes, :tempoDescansoSegundos, :peso)";
-
+        $sql = "INSERT INTO atividade (nome, descricao, series, repeticoes, tempoDescansoSegundos, tempo, peso)
+                VALUES (:nome, :descricao, :series, :repeticoes, :tempoDescansoSegundos, :tempo, :peso)";
         $stmt = $pdo->prepare($sql);
 
         $stmt->execute([
             ':nome' => $nome,
+            ':descricao' => $descricao,
             ':series' => $series,
             ':repeticoes' => $repeticoes,
             ':tempoDescansoSegundos' => $tempoDescansoSegundos,
+            ':tempo' => $tempo,
             ':peso' => $peso
         ]);
 
@@ -262,171 +263,179 @@ if ($acao === 'criar') {
             'sucesso' => true,
             'id' => $atividade_id,
             'nome' => $nome,
+            'descricao' => $descricao,
             'series' => $series,
             'repeticoes' => $repeticoes,
             'tempoDescansoSegundos' => $tempoDescansoSegundos,
+            'tempo' => $tempo,
             'peso' => $peso
         ]);
 
     } catch (PDOException $e) {
-
        if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
-
         error_log($e->getMessage());
-
         http_response_code(500);
-
         echo json_encode([
             'sucesso' => false,
             'mensagem' => 'Erro ao criar atividade.'
         ]);
     }
-
         exit;
 }
 
-elseif ($_POST['acao'] === 'editar') {
+elseif ($acao === 'editar') {
 
-    $id = $_POST['id'] ?? null;
+    $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
+    $ficha_id = filter_var($_POST['ficha_id'] ?? null, FILTER_VALIDATE_INT);
+
     $nome = trim($_POST['nome'] ?? '');
+    $descricao = trim($_POST['descricao'] ?? '');
+    $tipo = $_POST['tipo'] ?? '';
 
-    if (!$id || !ctype_digit((string) $id) || $nome === '' || mb_strlen($nome) > 100) {
+    $series = $_POST['series'] ?? '';
+    $repeticoes = $_POST['repeticoes'] ?? '';
+    $tempoDescansoSegundos = $_POST['tempoDescansoSegundos'] ?? '';
+    $tempo = $_POST['tempo'] ?? '';
+    $peso = trim((string) ($_POST['peso'] ?? ''));
+
+    // VALIDAR IDENTIFICADORES E NOME
+    if (
+        !$id || $id < 1 ||
+        !$ficha_id || $ficha_id < 1 ||
+        $nome === '' ||
+        mb_strlen($nome) > 100 ||
+        !in_array($tipo, ['series', 'tempo'])
+    ) {
         http_response_code(400);
-
         echo json_encode([
             'sucesso' => false,
             'mensagem' => 'Dados inválidos.'
         ]);
-
         exit;
     }
 
+    //VALIDAR INTEIROS
+    $validarInteiro = function ($valor, $minimo, $campo) {
+
+        if ($valor === null || $valor === '') {
+            return null;
+        }
+        $valorValidado = filter_var($valor, FILTER_VALIDATE_INT);
+
+        if ($valorValidado === false || $valorValidado < $minimo) {
+            throw new InvalidArgumentException(
+                "O campo $campo possui um valor inválido."
+            );
+        }
+        return $valorValidado;
+    };
+
     try {
-        $sql = "UPDATE atividade
-                SET nome = :nome
-                WHERE id = :id
-                AND usuario_id = :usuario_id";
-
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->execute([
-            ':nome' => $nome,
-            ':id' => $id,
-            ':usuario_id' => $usuario_id
-        ]);
-
-        if ($stmt->rowCount() === 0) {
-            // Pode ser que a atividade não exista ou que o nome não tenha mudado.
-            $sql = "SELECT id FROM atividade
-                    WHERE id = :id AND usuario_id = :usuario_id";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
-                ':id' => $id,
-                ':usuario_id' => $usuario_id
-            ]);
-
-            if (!$stmt->fetch()) {
-                http_response_code(404);
-
-                echo json_encode([
-                    'sucesso' => false,
-                    'mensagem' => 'Ficha não encontrada.'
-                ]);
-
-                exit;
-            }
+        $series = $tipo === 'series'
+            ? $validarInteiro($series, 1, 'Séries')
+            : null;
+        $repeticoes = $tipo === 'series'
+            ? $validarInteiro($repeticoes, 1, 'Repetições')
+            : null;
+        $tempoDescansoSegundos = $tipo === 'series'
+            ? $validarInteiro($tempoDescansoSegundos, 0, 'Descanso')
+            : null;
+        $tempo = $tipo === 'tempo'
+            ? $validarInteiro($tempo, 1, 'Tempo')
+            : null;
+        if (
+            ($tipo === 'series' && ($series === null || $repeticoes === null)) ||
+            ($tipo === 'tempo' && $tempo === null)
+        ) {
+            throw new InvalidArgumentException(
+                'Preencha os campos obrigatórios da configuração.'
+            );
         }
 
-        echo json_encode([
-            'sucesso' => true,
-            'nome' => $nome
-        ]);
+        //VALIDAR PESO
+        if ($peso === '') {
+            $peso = null;
+        } elseif (
+            !is_numeric($peso) ||
+            !is_finite((float) $peso) ||
+            (float) $peso < 0
+        ) {
+            throw new InvalidArgumentException('Peso inválido.');
+        } else {
+            $peso = (float) $peso;
+        }
 
-    } catch (PDOException $e) {
-        error_log($e->getMessage());
-
-        http_response_code(500);
-
-        echo json_encode([
-            'sucesso' => false,
-            'mensagem' => 'Erro ao editar ficha.'
-        ]);
-    }
-}
-
-elseif ($_POST['acao'] === 'excluir') {
-
-    $id = $_POST['id'] ?? null;
-
-    if (!$id || !ctype_digit((string) $id)) {
-        http_response_code(400);
-
-        echo json_encode([
-            'sucesso' => false,
-            'mensagem' => 'ID inválido.'
-        ]);
-
-        exit;
-    }
-
-    try {
-        $pdo->beginTransaction();
-
-        // Verificar se a ficha pertence ao usuário
-        $sql = "SELECT id FROM fichaTreino
-                WHERE id = :id AND usuario_id = :usuario_id";
+        //VERIFICAR SE ATIVIDADE = FICHA DO USUÁRIO
+        $sql = "SELECT ativ.id
+                FROM atividade ativ
+                INNER JOIN atividade_has_fichaTreino ativft
+                    ON ativ.id = ativft.atividade_id
+                INNER JOIN fichaTreino ficha
+                    ON ficha.id = ativft.fichaTreino_id
+                WHERE ativ.id = :id
+                AND ficha.id = :ficha_id
+                AND ficha.usuario_id = :usuario_id";
 
         $stmt = $pdo->prepare($sql);
+
         $stmt->execute([
             ':id' => $id,
+            ':ficha_id' => $ficha_id,
             ':usuario_id' => $usuario_id
         ]);
 
         if (!$stmt->fetch()) {
-            $pdo->rollBack();
-
             http_response_code(404);
 
             echo json_encode([
                 'sucesso' => false,
-                'mensagem' => 'Ficha não encontrada.'
+                'mensagem' => 'Atividade não encontrada.'
             ]);
 
             exit;
         }
 
-        // Excluir vínculos com atividades
-        $sql = "DELETE FROM atividade_has_fichaTreino
-                WHERE fichaTreino_id = :id";
+        //ATUALIZAR ATIV
+        $sql = "UPDATE atividade
+                SET nome = :nome,
+                    descricao = :descricao,
+                    series = :series,
+                    repeticoes = :repeticoes,
+                    tempoDescansoSegundos = :descanso,
+                    tempo = :tempo,
+                    peso = :peso
+                WHERE id = :id";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
 
-        // Excluir ficha
-        $sql = "DELETE FROM fichaTreino
-                WHERE id = :id AND usuario_id = :usuario_id";
-
-        $stmt = $pdo->prepare($sql);
         $stmt->execute([
-            ':id' => $id,
-            ':usuario_id' => $usuario_id
+            ':nome' => $nome,
+            ':descricao' => $descricao,
+            ':series' => $series,
+            ':repeticoes' => $repeticoes,
+            ':descanso' => $tempoDescansoSegundos,
+            ':tempo' => $tempo,
+            ':peso' => $peso,
+            ':id' => $id
         ]);
-
-        $pdo->commit();
 
         echo json_encode([
             'sucesso' => true,
-            'mensagem' => 'Ficha excluída com sucesso.'
+            'mensagem' => 'Atividade atualizada com sucesso.'
+        ]);
+
+    } catch (InvalidArgumentException $e) {
+
+        http_response_code(400);
+
+        echo json_encode([
+            'sucesso' => false,
+            'mensagem' => $e->getMessage()
         ]);
 
     } catch (PDOException $e) {
-
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
 
         error_log($e->getMessage());
 
@@ -434,14 +443,95 @@ elseif ($_POST['acao'] === 'excluir') {
 
         echo json_encode([
             'sucesso' => false,
-            'mensagem' => 'Erro ao excluir ficha.'
+            'mensagem' => 'Erro ao editar atividade.'
         ]);
     }
-} else {
-    http_response_code(400);
 
-    echo json_encode([
-        'sucesso' => false,
-        'mensagem' => 'Ação inválida.'
-    ]);
+    exit;
+}
+
+elseif ($acao === 'excluir') {
+
+    $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
+    $ficha_id = filter_var($_POST['ficha_id'] ?? null, FILTER_VALIDATE_INT);
+
+    if (!$id || $id < 1 || !$ficha_id || $ficha_id < 1) {
+        http_response_code(400);
+        echo json_encode([
+            'sucesso' => false,
+            'mensagem' => 'Identificadores inválidos.'
+        ]);
+        exit;
+    }
+
+    try {
+        $pdo->beginTransaction();
+        //VERIFICAR SE ATIVIDADE = FICHA DO USUÁRIO
+        $sql = "SELECT ativ.id
+                FROM atividade ativ
+                INNER JOIN atividade_has_fichaTreino ativft
+                    ON ativ.id = ativft.atividade_id
+                INNER JOIN fichaTreino ficha
+                    ON ficha.id = ativft.fichaTreino_id
+                WHERE ativ.id = :id
+                AND ficha.id = :ficha_id
+                AND ficha.usuario_id = :usuario_id";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id,
+            ':ficha_id' => $ficha_id,
+            ':usuario_id' => $usuario_id
+        ]);
+
+        if (!$stmt->fetch()) {
+            $pdo->rollBack();
+            http_response_code(404);
+
+            echo json_encode([
+                'sucesso' => false,
+                'mensagem' => 'Atividade não encontrada.'
+            ]);
+            exit;
+        }
+
+        //EXCLUIR VÍNCULO
+        $sql = "DELETE FROM atividade_has_fichaTreino
+                WHERE atividade_id = :id
+                AND fichaTreino_id = :ficha_id";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id,
+            ':ficha_id' => $ficha_id
+        ]);
+
+        //EXCLUIR ATIV
+        $sql = "DELETE FROM atividade
+                WHERE id = :id";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        $pdo->commit();
+
+        echo json_encode([
+            'sucesso' => true,
+            'mensagem' => 'Atividade excluída com sucesso.'
+        ]);
+    } catch (PDOException $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+
+        error_log($e->getMessage());
+        http_response_code(500);
+        echo json_encode([
+            'sucesso' => false,
+            'mensagem' => 'Erro ao excluir atividade.'
+        ]);
+    }
+    exit;
 }

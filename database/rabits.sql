@@ -1,4 +1,3 @@
-USE rabits;
-
-SELECT *
-FROM fichaTreino;
+ALTER TABLE atividade
+ADD COLUMN tempo INT UNSIGNED NULL,
+ADD COLUMN descricao TEXT NULL;

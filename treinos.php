@@ -65,9 +65,6 @@ if (!$ficha) {
                         </div>
                         <label for="descricao">Descrição</label>
                         <textarea class="form-control" id="descricao" rows="3"></textarea>
-                        <div class="input-group mb-3">
-                            <input type="file" accept="image/png, image/gif, image/jpeg" class="form-control mt-2" id="imagem-atividade" aria-describedby="inputGroupFileAddon03" aria-label="Upload">
-                        </div>
                         <div class="container">
                             <div class="row col-2">
                                 <div class="form-check">
@@ -83,25 +80,37 @@ if (!$ficha) {
                             </div>
                             <div class="row col-10">
                                 <div class="config-atividade">
-                                    <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="quantidade-series" name="series" min="1" placeholder="3">
-                                        <label for="quantidade-series">Quantidade de séries</label>
+                                    <div class="config-serie" style="display: ;">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="quantidade-series" name="series" min="1" placeholder="3">
+                                            <label for="quantidade-series">Quantidade de séries</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="quantidade-repeticoes" name="repeticoes" min="1" placeholder="10">
+                                            <label for="quantidade-repeticoes">Repetições por série</label>
+                                        </div>
                                     </div>
-                                    <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="quantidade-repeticoes" name="repeticoes" min="1" placeholder="10">
-                                        <label for="quantidade-repeticoes">Repetições por série</label>
+                                    <div class="config-tempo" style="display: ;">
+                                        <div class="form-floating mb-3" id="config-tempo">
+                                            <input type="number" class="form-control" id="tempo-atividade" min="1" placeholder="30">
+                                            <label for="tempo-atividade">Duração (segundos)</label>
+                                        </div>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <input type="number" class="form-control" id="descanso-series" name="descanso" min="0" placeholder="60">
                                         <label for="descanso-series">Descanso (segundos)</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="peso" name="peso" min="0" placeholder="0">
+                                        <label for="peso">Peso (kg)</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="salvar">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
                     </div>
                 </div>
             </div>
