@@ -1,6 +1,37 @@
 <?php
 include 'backend/login-check.php';
+
+$ficha_id = filter_input(INPUT_GET, 'ficha_id', FILTER_VALIDATE_INT);
+
+if (!$ficha_id || $ficha_id <= 0) {
+    header('Location: fichas.php');
+    exit;
+}
+
+require_once __DIR__ . '/backend/config/database.php';
+
+$sql = "SELECT id, nome
+        FROM fichaTreino
+        WHERE id = :id
+        AND usuario_id = :usuario_id";
+
+$stmt = $pdo->prepare($sql);
+
+$stmt->execute([
+    ':id' => $ficha_id,
+    ':usuario_id' => $_SESSION['usuario_id']
+]);
+
+$ficha = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$ficha) {
+    header('Location: fichas.php');
+    exit;
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -11,7 +42,7 @@ include 'backend/login-check.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles/minhas-cores-claro.css">
     <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/edicao-treino.css">
+    <link rel="stylesheet" href="styles/treinos.css">
     <script src="scripts/jquery-4.0.0.min.js"></script>
 </head>
 
@@ -76,6 +107,12 @@ include 'backend/login-check.php';
             </div>
         </div>
         <div class="container atividades-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2><?= htmlspecialchars($ficha['nome']) ?></h2>
+                    <p class="text-muted">Atividades desta ficha</p>
+                </div>
+            </div>
             <!-- Cards -->
 
 
@@ -93,7 +130,10 @@ include 'backend/login-check.php';
 
 
 </body>
+<script>
+    const fichaId = <?= json_encode((int) $ficha_id) ?>;
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<script src="scripts/edicao-treino.js"></script>
+<script src="scripts/treinos.js"></script>
 
 </html>

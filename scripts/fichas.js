@@ -62,6 +62,19 @@ $(document).ready(function() {
 
     });
 
+    // ABRIR FICHA
+    $('main').on('click', '.ficha-card', function(event) {
+
+        // Evitar redirecionamento ao clicar nos botões e no menu
+        if ($(event.target).closest('.editar-ficha, .menu-ficha, .card-img-top').length) {
+            return;
+        }
+
+        const id = $(this).attr('data-id');
+
+        window.location.href = `treinos.php?ficha_id=${id}`;
+
+    });
 
     // EDITAR FICHA
     $('main').on('click', '.opcao-editar', function() {
