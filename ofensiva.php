@@ -12,6 +12,7 @@ include 'backend/login-check.php';
     <link rel="stylesheet" href="styles/minhas-cores-claro.css">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/ofensiva.css">
+    <script src="scripts/jquery-4.0.0.min.js"></script>
 </head>
 
 <body class="d-flex flex-column">
@@ -38,18 +39,18 @@ include 'backend/login-check.php';
 
                     <div class="header">
                         <select class="date-selector" id="month-selector" type="button" value="September">
-                            <option value="0">January</option>
-                            <option value="1">February</option>
-                            <option value="2">March</option>
-                            <option value="3">April</option>
-                            <option value="4">May</option>
-                            <option value="5">June</option>
-                            <option value="6">July</option>
-                            <option value="7" selected>August</option>
-                            <option value="8">September</option>
-                            <option value="9">October</option>
-                            <option value="10">November</option>
-                            <option value="11">December</option>
+                            <option value="0">Janeiro</option>
+                            <option value="1">Fevereiro</option>
+                            <option value="2">Março</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Maio</option>
+                            <option value="5">Junho</option>
+                            <option value="6">Julho</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Setembro</option>
+                            <option value="9">Outubro</option>
+                            <option value="10">Novembro</option>
+                            <option value="11">Dezembro</option>
                             </select>
                     </div>
                     <!-- Importar biblioteca do calendário -->
@@ -79,7 +80,7 @@ include 'backend/login-check.php';
                             </div>
                         </div>
                         <div class="date-nav-container">
-
+                            
                         </div>
 
                     </div>
