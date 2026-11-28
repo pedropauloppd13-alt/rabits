@@ -1,3 +1,7 @@
+/* =========================
+   CONFIGURAÇÕES GERAIS
+   ========================= */
+
 * {
     box-sizing: border-box;
 }
@@ -16,52 +20,58 @@ body {
    ========================= */
 
 .treino-header {
-    background-color: #3461ad;
-    color: white;
-    padding: 18px 5%;
     position: sticky;
     top: 0;
     z-index: 10;
-}
-
-.header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
+    padding: 18px 5%;
+    background-color: #3461ad;
+    color: white;
 }
 
 .fechar {
-    font-size: 30px;
+    position: absolute;
+    top: 20px;
+    left: 5%;
+    width: 40px;
+    border: none;
+    background: none;
     color: white;
-    text-decoration: none;
-    width: 40px;
+    font-size: 30px;
+    cursor: pointer;
 }
 
-.treino-nome {
-    flex: 1;
+.titulo-treino {
+    text-align: center;
 }
 
-.treino-nome h1 {
-    font-size: 20px;
+.titulo-treino h1 {
     margin: 0;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: 700;
 }
 
-.treino-nome p {
-    margin: 3px 0 0;
+.titulo-treino span {
+    display: block;
+    margin-top: 3px;
     font-size: 14px;
+    opacity: 0.8;
 }
 
-.progresso-numero {
+.contador-atividade {
+    position: absolute;
+    top: 30px;
+    right: 5%;
     font-size: 16px;
-    width: 40px;
 }
 
 
 /* =========================
    PROGRESSO
    ========================= */
+
+.progresso-container {
+    margin-top: 18px;
+}
 
 .progresso-info {
     display: flex;
@@ -70,18 +80,18 @@ body {
     font-size: 14px;
 }
 
-.progresso-barra {
+.barra-progresso {
     width: 100%;
     height: 10px;
+    margin-top: 6px;
+    overflow: hidden;
     background-color: #6d8cc5;
     border-radius: 10px;
-    overflow: hidden;
-    margin-top: 6px;
 }
 
-.progresso-atual {
-    height: 100%;
+.progresso {
     width: 0%;
+    height: 100%;
     background-color: white;
     border-radius: 10px;
     transition: width 0.3s ease;
@@ -92,19 +102,18 @@ body {
    CONTEÚDO
    ========================= */
 
-.treino-container {
-    padding: 15px 4%;
-    padding-bottom: 100px;
+.conteudo {
+    padding: 15px 0 110px;
 }
 
-.grupo {
+.atividade-titulo {
     display: inline-block;
+    margin: 15px 4%;
+    padding: 10px 16px;
     background-color: #3461ad;
     color: white;
-    padding: 10px 16px;
     border-radius: 25px;
     font-weight: bold;
-    margin-bottom: 15px;
 }
 
 
@@ -112,40 +121,47 @@ body {
    ATIVIDADES
    ========================= */
 
-.atividade {
+#lista-exercicios {
+    display: grid;
+    gap: 18px;
+    padding: 0 4%;
+}
+
+.exercicio {
+    padding: 25px 22px;
     background-color: white;
     border-radius: 20px;
-    padding: 28px 25px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(16, 36, 62, 0.05);
 }
 
-.atividade-nome {
-    font-size: 19px;
-    font-weight: bold;
+.exercicio-nome {
     margin: 0 0 5px;
+    color: #10243e;
+    font-size: 19px;
+    font-weight: 700;
 }
 
-.atividade-info {
+.exercicio-info {
+    margin: 0 0 16px;
     color: #8192aa;
     font-size: 14px;
-    margin: 0 0 15px;
 }
 
 
 /* =========================
-   BOTÕES DAS SÉRIES
+   SÉRIES E CONCLUSÃO
    ========================= */
 
 .series {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
-.serie-btn {
+.serie {
     width: 60px;
-    height: 60px;
+    min-height: 60px;
+    padding: 8px;
     border: none;
     border-radius: 15px;
     background-color: #f0f1f3;
@@ -156,29 +172,100 @@ body {
     transition: 0.2s;
 }
 
-.serie-btn:hover {
+.serie:hover {
     transform: scale(1.04);
 }
 
-.serie-btn.concluida {
+.serie:disabled,
+.serie.concluida {
     background-color: #3461ad;
     color: white;
+    cursor: default;
+    opacity: 1;
+}
+
+.serie:disabled:hover {
+    transform: none;
 }
 
 
 /* =========================
-   BOTÃO FINALIZAR
+   DESCANSO
    ========================= */
 
-.finalizar-container {
+.descanso-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    background: rgba(52, 97, 173, 0.94);
+    color: white;
+}
+
+.descanso-overlay[hidden] {
+    display: none;
+}
+
+.descanso-dialog {
+    display: flex;
+    width: min(100% - 36px, 520px);
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+}
+
+.descanso-dialog h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.cronometro-circulo {
+    display: grid;
+    width: 215px;
+    height: 215px;
+    place-items: center;
+    border: 18px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+}
+
+.cronometro-circulo span {
+    font-size: 62px;
+    font-weight: 700;
+}
+
+.pular-descanso {
+    min-width: 235px;
+    padding: 16px 28px;
+    border: none;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.pular-descanso:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+
+/* =========================
+   RODAPÉ E FINALIZAÇÃO
+   ========================= */
+
+.rodape {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 20;
     width: 100%;
     padding: 20px 3%;
     background-color: white;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
-    z-index: 20;
 }
 
 .finalizar {
@@ -211,222 +298,10 @@ body {
     .treino-header {
         padding: 15px 20px;
     }
-    .treino-container {
-        padding: 15px;
-        padding-bottom: 100px;
+    .fechar {
+        left: 15px;
     }
-    .atividade {
-        padding: 22px 20px;
-    }
-    .atividade-nome {
-        font-size: 18px;
-    }
-    .serie-btn {
-        width: 55px;
-        height: 55px;
-    }
-    .finalizar-container {
-        padding: 15px;
-    }
-    .finalizar {
-        height: 55px;
-        font-size: 16px;
-    }
-}
-
-.barra-progresso {
-    width: 100%;
-    height: 10px;
-    background-color: #6d8cc5;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 6px;
-}
-
-.progresso {
-    height: 100%;
-    width: 0%;
-    background-color: white;
-    border-radius: 10px;
-    transition: width 0.3s ease;
-}
-
-.descanso-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 14px;
-    padding: 8px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-.descanso-container strong {
-    min-width: 54px;
-    font-size: 20px;
-    text-align: right;
-}
-
-.grupo-titulo {
-    display: inline-block;
-    background-color: #3461ad;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 25px;
-    font-weight: bold;
-    margin: 15px 4%;
-}
-
-.serie {
-    width: 60px;
-    min-height: 60px;
-    border: none;
-    border-radius: 15px;
-    background-color: #f0f1f3;
-    color: #5c6c80;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.serie:hover {
-    transform: scale(1.04);
-}
-
-.serie.concluida {
-    background-color: #3461ad;
-    color: white;
-}
-
-.rodape {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px 3%;
-    background-color: white;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
-    z-index: 20;
-}
-
-.conteudo {
-    padding-bottom: 110px;
-}
-
-.titulo-treino {
-    text-align: center;
-}
-
-.titulo-treino h1 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.titulo-treino span {
-    display: block;
-    margin-top: 3px;
-    font-size: 14px;
-    opacity: 0.8;
-}
-
-.contador-grupo {
-    position: absolute;
-    top: 30px;
-    right: 5%;
-    font-size: 16px;
-}
-
-#lista-exercicios {
-    display: grid;
-    gap: 18px;
-    padding: 0 4%;
-}
-
-.exercicio {
-    padding: 25px 22px;
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 2px 8px rgba(16, 36, 62, 0.05);
-}
-
-.exercicio-nome {
-    margin: 0 0 5px;
-    color: #10243e;
-    font-size: 19px;
-    font-weight: 700;
-}
-
-.exercicio-info {
-    margin: 0 0 16px;
-    color: #8192aa;
-    font-size: 14px;
-}
-
-.descanso-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    display: grid;
-    place-items: center;
-    background: rgba(52, 97, 173, 0.94);
-    color: #ffffff;
-}
-
-.descanso-overlay[hidden] {
-    display: none;
-}
-
-.descanso-dialog {
-    display: flex;
-    width: min(100% - 36px, 520px);
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    text-align: center;
-}
-
-.descanso-dialog h2 {
-    margin: 0;
-    font-size: 24px;
-}
-
-.cronometro-circulo {
-    display: grid;
-    width: 215px;
-    height: 215px;
-    place-items: center;
-    border: 18px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #ffffff;
-    border-radius: 50%;
-}
-
-.cronometro-circulo span {
-    font-size: 62px;
-    font-weight: 700;
-}
-
-.pular-descanso {
-    min-width: 235px;
-    padding: 16px 28px;
-    border: 0;
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.25);
-    color: #ffffff;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.pular-descanso:hover {
-    background: rgba(255, 255, 255, 0.35);
-}
-
-@media (max-width: 600px) {
-    .contador-grupo {
+    .contador-atividade {
         right: 20px;
     }
     #lista-exercicios {
@@ -434,6 +309,20 @@ body {
     }
     .exercicio {
         padding: 22px 20px;
+    }
+    .exercicio-nome {
+        font-size: 18px;
+    }
+    .serie {
+        width: 55px;
+        min-height: 55px;
+    }
+    .rodape {
+        padding: 15px;
+    }
+    .finalizar {
+        height: 55px;
+        font-size: 16px;
     }
     .cronometro-circulo {
         width: 190px;

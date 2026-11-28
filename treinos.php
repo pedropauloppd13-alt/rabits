@@ -1,33 +1,33 @@
 <?php
-include 'backend/login-check.php';
+    include 'backend/login-check.php';
 
-$ficha_id = filter_input(INPUT_GET, 'ficha_id', FILTER_VALIDATE_INT);
+    $ficha_id = filter_input(INPUT_GET, 'ficha_id', FILTER_VALIDATE_INT);
 
-if (!$ficha_id || $ficha_id <= 0) {
-    header('Location: fichas.php');
-    exit;
-}
+    if (!$ficha_id || $ficha_id <= 0) {
+        header('Location: fichas.php');
+        exit;
+    }
 
-require_once __DIR__ . '/backend/config/database.php';
+    require_once __DIR__ . '/backend/config/database.php';
 
-$sql = "SELECT id, nome
-        FROM fichaTreino
-        WHERE id = :id
-        AND usuario_id = :usuario_id";
+    $sql = "SELECT id, nome
+            FROM fichaTreino
+            WHERE id = :id
+            AND usuario_id = :usuario_id";
 
-$stmt = $pdo->prepare($sql);
+    $stmt = $pdo->prepare($sql);
 
-$stmt->execute([
-    ':id' => $ficha_id,
-    ':usuario_id' => $_SESSION['usuario_id']
-]);
+    $stmt->execute([
+        ':id' => $ficha_id,
+        ':usuario_id' => $_SESSION['usuario_id']
+    ]);
 
-$ficha = $stmt->fetch(PDO::FETCH_ASSOC);
+    $ficha = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$ficha) {
-    header('Location: fichas.php');
-    exit;
-}
+    if (!$ficha) {
+        header('Location: fichas.php');
+        exit;
+    }
 
 ?>
 
@@ -80,30 +80,42 @@ if (!$ficha) {
                             </div>
                             <div class="row col-10">
                                 <div class="config-atividade">
-                                    <div class="config-serie" style="display: ;">
+
+                                    <div class="config-serie" style="display: none;">
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="quantidade-series" name="series" min="1" placeholder="3">
+                                            <input type="number" class="form-control"
+                                                id="quantidade-series" min="1" placeholder="3">
                                             <label for="quantidade-series">Quantidade de séries</label>
                                         </div>
+
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="quantidade-repeticoes" name="repeticoes" min="1" placeholder="10">
+                                            <input type="number" class="form-control"
+                                                id="quantidade-repeticoes" min="1" placeholder="10">
                                             <label for="quantidade-repeticoes">Repetições por série</label>
                                         </div>
+  
                                     </div>
-                                    <div class="config-tempo" style="display: ;">
-                                        <div class="form-floating mb-3" id="config-tempo">
-                                            <input type="number" class="form-control" id="tempo-atividade" min="1" placeholder="30">
+
+                                    <div class="config-tempo" style="display: none;">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control"
+                                                id="tempo-atividade" min="1" placeholder="30">
                                             <label for="tempo-atividade">Duração (segundos)</label>
                                         </div>
                                     </div>
+                                     
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="descanso-series" name="descanso" min="0" placeholder="60">
-                                        <label for="descanso-series">Descanso (segundos)</label>
-                                    </div>
+                                            <input type="number" class="form-control"
+                                                id="descanso-series" min="0" placeholder="60">
+                                            <label for="descanso-series">Descanso (segundos)</label>
+                                        </div>
+
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="peso" name="peso" min="0" placeholder="0">
+                                        <input type="number" class="form-control"
+                                            id="peso" min="0" placeholder="0">
                                         <label for="peso">Peso (kg)</label>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -135,9 +147,10 @@ if (!$ficha) {
                 <img src="images/icones/plus-lg2.svg" class="card-img-top" alt="+">
             </a>
         </div>
+        <a href="executar-treino.php?ficha_id=<?= $ficha_id ?>" class="btn btn-primary" type="button" id="iniciar">
+            Iniciar Treino
+        </a>
     </main>
-
-
 </body>
 <script>
     const fichaId = <?= json_encode((int) $ficha_id) ?>;

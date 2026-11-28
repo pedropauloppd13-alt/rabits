@@ -8,12 +8,12 @@ $(document).ready(function() {
 
     //ALTERNAR CONFIGs
     $('input[name="tipo"]').change(function() {
-        $('#config-series, #config-tempo').hide();
+        $('.config-serie, .config-tempo').hide();
 
         if ($(this).val() === 'series') {
-            $('#config-series').show();
+            $('.config-serie').show();
         } else if ($(this).val() === 'tempo') {
-            $('#config-tempo').show();
+            $('.config-tempo').show();
         }
     });
 
